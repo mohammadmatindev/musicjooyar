@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ورود - موزیکدان</title>
+    <link rel="stylesheet" href="https://dl.daneshjooyar.com/mvie/Moodi_Hamed/assets/css/font-yekanbakh-vf.css">
+    <link href="../css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/panel.css">
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-box"><!--.active-verify-form-->
+            <a href="/" class="login-logo">
+                <img src="../images/logo-animated.svg" alt="Musicjooyar" width="210" height="105">
+            </a>
+            <div class="glow-box">
+
+                <form action="#" id="verify-form" method="post"><!-- .otp-expired, .otp-sending -->
+
+                    <h1>کد تأیید را وارد کنید</h1>
+                    <p class="otp-sent-number">
+                        کد به شماره
+                        <strong id="phone_show">09123456789</strong>
+                        ارسال شد
+                    </p>
+                    <div class="form-group error" id="error_bax"><!-- .error -->
+                        <label for="otp">
+                            کد تأیید
+                            <a href="?login.php" class="change-phone">
+                                تغییر شماره
+                            </a>
+                        </label>
+                        <input type="text"  class="form-control ltr" inputmode="numeric" name="otp" value="52321023123" id="in_code" required>
+                        <p class="input-error" id="error_msg">پیام خطا</p>
+                    </div>
+                    <div class="otp-time">
+                        <p class="count-down">
+                            <strong class="count-down-remain" id="timer">00:00</strong>
+                            مانده تا دریافت مجدد
+                        </p>
+                        <p class="expired-text">
+                            کدمنقضی شد
+                        </p>
+                        <a href="#" class="resend-otp" id="resend">
+                            دریافت مجدد کد
+                        </a>
+                        <span class="otp-resend-loading">در حال ارسال مجدد</span>
+                    </div>
+                    <input type="hidden" name="phone" value="" class="phone-verify">
+                    <button class="btn btn-primary btn-full" id="btn">
+                        تأیید و ورود
+                    </button>
+
+                </form><!--#verify-form-->
+
+
+
+
+                <form action="#" id="login-form">
+                    <h1>ورود/ثبت نام</h1>
+                    <div class="form-group">
+                        <label for="phone">شماره همراه</label>
+                        <input type="text" id="phone" class="form-control ltr" maxlength="14" inputmode="tel" name="phone" placeholder="Ex: 09123456789" required>
+                        <p class="input-error">پیام خطا</p>
+                    </div>
+                    <button class="btn btn-primary btn-full">
+                        ورود
+                    </button>
+                    <div class="or"></div>
+                    <a href="#google-login" class="btn btn-full btn-outline google-login">
+                        <img src="../images/google-logo.svg" alt="Google Login" width="800" height="800">
+                        ورود با گوگل
+                    </a>
+                    <div class="agreement">
+                        با ورود به سایت، شما
+                        <a href="#">قوانین ما</a>
+                        را پذیرفته اید
+                    </div>
+                </form><!--#login-form-->
+
+            </div>
+        </div><!--.login-box-->
+
+    </div><!--.login-container-->
+
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/select2.full.min.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>
