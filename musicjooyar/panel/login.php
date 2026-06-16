@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ورود - موزیکدان</title>
-    <link rel="stylesheet" href="https://dl.daneshjooyar.com/mvie/Moodi_Hamed/assets/css/font-yekanbakh-vf.css">
-    <link href="../css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/panel.css">
-</head>
-<body>
-
+<?php include('parts/panel-header.php')?>
     <div class="login-container">
 
         <div class="login-box"><!--.active-verify-form-->
@@ -27,7 +15,7 @@
                         <strong id="phone_show">09123456789</strong>
                         ارسال شد
                     </p>
-                    <div class="form-group error" id="error_bax"><!-- .error -->
+                    <div class="form-group " id="error_bax"><!-- .error -->
                         <label for="otp">
                             کد تأیید
                             <a href="?login.php" class="change-phone">
@@ -67,7 +55,7 @@
                         <input type="text" id="phone" class="form-control ltr" maxlength="14" inputmode="tel" name="phone" placeholder="Ex: 09123456789" required>
                         <p class="input-error">پیام خطا</p>
                     </div>
-                    <button class="btn btn-primary btn-full">
+                    <button class="btn btn-primary btn-full" id="btn_enter">
                         ورود
                     </button>
                     <div class="or"></div>
@@ -86,9 +74,4 @@
         </div><!--.login-box-->
 
     </div><!--.login-container-->
-
-    <script src="../js/jquery-3.7.1.min.js"></script>
-    <script src="../js/select2.full.min.js"></script>
-    <script src="../js/script.js"></script>
-</body>
-</html>
+<?php include('parts/panel-footer.php')?>

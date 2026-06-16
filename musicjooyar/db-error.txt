@@ -1,0 +1,6 @@
+2026-06-16 15:04:41  => Data too long for column 'phone' at row 1
+2026-06-16 15:11:47  => Data too long for column 'phone' at row 1
+2026-06-16 16:35:22  => You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'code_status' at line 1
+2026-06-16 16:47:22  => Data too long for column 'phone' at row 1
+2026-06-16 16:47:34  => Data too long for column 'phone' at row 1
+2026-06-16 16:47:50  => Data too long for column 'phone' at row 1

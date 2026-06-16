@@ -3,62 +3,105 @@ require_once('init.php');
 
 $response = [];
 
+
+
+
 if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
-    header("content-Type:application/json");
-    $code = random_int(1, 10000);
-    $_SESSION["code"] = $code;
-    $_SESSION["phone"] = $_POST["phone"];
-    send_sms_bot("RaT9nDb1W8YnwfMDIiHC6gtGmUOmd57BCh34hNNe");
 
 
+
+    $phone = trim($_POST["phone"]);
+    $code = rand(1, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+
+
+    if (empty($phone)) {
+
+        send_json([
+            "message" => "Number Phone is Empty"
+        ]);
+
+    }
+
+    if (!$phone) {
+        send_json([
+            "message" => "Number Phone NotFound"
+        ]);
+    }
 
     $response = [
         "message" => "NEXT",
-        "expire_date" => 3,
-
-
     ];
 
-    if (
-        db_insert('code_status', [
+
+
+
+
+    /*  عوض کن  MESSAGE_ID بعدا با  */
+
+    if ($response["message"] == "NEXT") {
+
+
+        send_sms_bot(BOT_TOKEN_KEY, $phone, $code);
+
+
+
+        $data_status_code = [
             'user_id' => 1,
-            "phone" => $_POST["phone"],
+            "phone" => "$phone",
             "code" => "$code",
             "action" => "login",
             "status" => "pending",
             'try_conut' => 0,
-            'sms_id' => 0,
+            'sms_id' => "0",
             'used_at' => date('Y-m-d H:i:s'),
-            'expire_date' => date('Y-m-d H:i:s'),
+            'expire_date' => date('Y-m-d H:i:s', strtotime("+3 minutes")),
             'created_at' => date('Y-m-d H:i:s'),
-        ])
-    ) {
-        echo json_encode($response);
-
-    } else {
-        $response = [
-            "message" => "NOT"
         ];
-        echo json_encode($response);
-    }
 
+        $insert_code = db_insert('code_status', $data_status_code);
+        if ($insert_code) {
+
+
+        }
+       
+
+
+        if (!$insert_code) {
+
+            send_json([
+                "message" => "OH , I can't load , ERROR ",
+
+            ]);
+
+
+
+
+
+
+
+
+
+        }
+
+         send_json([
+            "message" => "NEXT",
+
+        ]);
+
+
+
+    }
 }
 
 if (isset($_POST["btn"]) && $_POST["btn"] == "check") {
     header("content-Type:application/json");
-    if ($_SESSION["code"] == $_POST['otp']) {
-        $response = [
-            "message" => "ENTER",
-        ];
-    }else{
-        $response = [
-            "message" => "NOT",
-            "code"=>$_SESSION["code"],
-            "otp"=>$_POST['otp']
-        ];
-    }
+    $phone = trim($_POST["phone"]);
+    $otp = trim($_POST["otp"]);
+    $sql = "SELECT * FROM `code_status` WHERE phone = '$phone' AND code = '$otp' ORDER BY created_at DESC LIMIT 1";
+    var_dump(db_query($sql));
 
-        echo json_encode($response);
-    
+
 
 }
+
+
