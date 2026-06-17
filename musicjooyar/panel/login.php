@@ -22,7 +22,7 @@
                                 تغییر شماره
                             </a>
                         </label>
-                        <input type="text"  class="form-control ltr" inputmode="numeric" name="otp" value="52321023123" id="in_code" required>
+                        <input type="text"  class="form-control ltr" inputmode="numeric" name="otp" value="" id="in_code" required>
                         <p class="input-error" id="error_msg">پیام خطا</p>
                     </div>
                     <div class="otp-time">
@@ -52,7 +52,7 @@
                     <h1>ورود/ثبت نام</h1>
                     <div class="form-group">
                         <label for="phone">شماره همراه</label>
-                        <input type="text" id="phone" class="form-control ltr" maxlength="14" inputmode="tel" name="phone" placeholder="Ex: 09123456789" required>
+                        <input type="text" id="phone" class="form-control ltr" maxlength="14" inputmode="tel" name="token" placeholder="Ex: 09123456789" required>
                         <p class="input-error">پیام خطا</p>
                     </div>
                     <button class="btn btn-primary btn-full" id="btn_enter">

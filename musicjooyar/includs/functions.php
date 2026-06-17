@@ -1,9 +1,9 @@
 <?php
 
-function send_json($things)
+function send_json($things, $code = 200)
 {
     header("content-Type:application/json");
-
+    http_response_code($code);
     echo json_encode($things);
     exit;
 }
@@ -32,6 +32,15 @@ function send_sms_bot($token, $phone, $code)
 
     return $result;
 
+}
+
+function token_genarator($len){
+    $text = "QWERTYUIOPASDFGHJKLZXCVBNMmnbvcxzlkjhgfdsapoiuytrewq1234567890[]";
+    $res = "";
+    for($i=0;$i<=$len;$i++){
+        $res .= $text[random_int(0, strlen($text) - 1)];
+    }
+    return $res;
 }
 
 
