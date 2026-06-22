@@ -242,6 +242,11 @@ function generateRandomString($length) {
     return $randomString;
 }
 
+function is_current_user_admin(){
+    $user = get_user_current();
+    return $user && $user["role"] == "admin";
+
+}
 
 
 

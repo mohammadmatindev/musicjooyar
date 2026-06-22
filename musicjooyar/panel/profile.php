@@ -41,20 +41,21 @@ $has_avatar = $user['avatar'];
                     <div class="profile-image-actions <?php echo $has_avatar ? "" : "no-avatar" ?>">
                         <div class="profile-image-container">
                             <span class="profile-upload-progress"></span>
-                            <img src="<?php echo get_user_avatar() ?>" class="sidebar-avatar" alt="" width="64" height="64">
+                            <img src="<?php echo get_user_avatar() ?>" class="sidebar-avatar" alt="" width="64"
+                                height="64">
                         </div>
                         <label for="avatar" class="btn btn-secondary change-avatar">
-                          
-                        <span> انتخاب تصویر</span>
-                        <span>  تغییر تصویر</span> 
+
+                            <span> انتخاب تصویر</span>
+                            <span> تغییر تصویر</span>
 
 
 
                         </label>
                         <input type="file" id="avatar" name="avatar" style="display: none">
-                        
+
                         <a href="#" class="btn btn-delete delete-profile">حذف تصویر</a>
-                
+
                     </div>
                 </div><!--.profile-image-->
 
@@ -103,17 +104,20 @@ $has_avatar = $user['avatar'];
                             value="<?php echo $last_name ?>">
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="user_role">نقش کاربر</label>
-                    <div class="inline-input">
-                        <select name="user_role" id="user_role" class="form-control">
-                            <option value="subscriber">کاربر مشترک</option>
-                            <option value="author">نویسنده</option>
-                            <option value="admin">مدیریت</option>
-                        </select>
+                <?php if (is_current_user_admin()): ?>
+                    
+                    <div class="form-group">
+                        <label for="user_role">نقش کاربر</label>
+                        <div class="inline-input">
+                            <select name="user_role" id="user_role" class="form-control">
+                                <option value="subscriber">کاربر مشترک</option>
+                                <option value="author">نویسنده</option>
+                                <option value="admin">مدیریت</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+
+                <?php endif; ?>
 
                 <button class="btn btn-primary">
                     ذخیره تغییرات

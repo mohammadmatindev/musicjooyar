@@ -22,6 +22,13 @@ if ($page_name == "login") {
     }
 
 }
+
+if( $page_name != "login" && !is_current_user_admin()){
+    $allow_pages =["index","favorites","profile"];
+    if(!in_array($page_name,$allow_pages)){
+        die("YOU NOT ACCESS :( ");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fa">
