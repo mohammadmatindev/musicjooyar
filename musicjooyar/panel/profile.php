@@ -1,6 +1,14 @@
-<?php include('parts/panel-header.php')?>
+<?php
+include('parts/panel-header.php');
+$user = get_user_current();
+$phone = $user['phone'];
+$username = $user['username'];
+$first_name = $user['first_name'];
+$last_name = $user['last_name'];
+$has_avatar = $user['avatar'];
+?>
 <div class="panel-container glow-box">
-    <?php include('parts/panel-sidebar.php')?>
+    <?php include('parts/panel-sidebar.php') ?>
 
     <main class="main">
         <header>
@@ -28,22 +36,33 @@
 
             <form action="#" id="form-edit-profile">
                 <div class="form-group profile-image">
+
                     <label for="avatar">تصویر پروفایل</label>
-                    <div class="profile-image-actions">
+                    <div class="profile-image-actions <?php echo $has_avatar ? "" : "no-avatar" ?>">
                         <div class="profile-image-container">
                             <span class="profile-upload-progress"></span>
-                            <img src="../images/hamedmoody.jpg" alt="Hamed Moodi" width="64" height="64">
+                            <img src="<?php echo get_user_avatar() ?>" class="sidebar-avatar" alt="" width="64" height="64">
                         </div>
-                        <label for="avatar" class="btn btn-secondary">تغییر تصویر</label>
+                        <label for="avatar" class="btn btn-secondary change-avatar">
+                          
+                        <span> انتخاب تصویر</span>
+                        <span>  تغییر تصویر</span> 
+
+
+
+                        </label>
                         <input type="file" id="avatar" name="avatar" style="display: none">
+                        
                         <a href="#" class="btn btn-delete delete-profile">حذف تصویر</a>
+                
                     </div>
                 </div><!--.profile-image-->
 
                 <div class="form-group">
                     <label for="phone">تلفن همراه</label>
                     <div class="inline-input">
-                        <input type="text" disabled name="phone" id="phone" class="form-control ltr" value="09123456789">
+                        <input type="text" disabled name="phone" id="phone" class="form-control ltr"
+                            value="<?php echo $phone ?>">
                         <span class="text-light">غیر قابل تغییر</span>
                     </div>
                 </div>
@@ -51,7 +70,8 @@
                 <div class="form-group field-duplicate-check">
                     <label for="username">نام کاربری</label>
                     <div class="inline-input">
-                        <input type="text" name="username" id="username" class="form-control ltr" value="u3215">
+                        <input type="text" name="username" id="username" class="form-control ltr"
+                            value="<?php echo $username ?>">
                         <div class="field-exists-check"><!-- .checking, .error, .success -->
                             <div class="field-exists">
                                 <i class="mj mj-close-circle"></i>
@@ -72,13 +92,15 @@
                 <div class="form-group">
                     <label for="first_name">نام</label>
                     <div class="inline-input">
-                        <input type="text" name="first_name" id="first_name" class="form-control" value="حامد">
+                        <input type="text" name="first_name" id="first_name" class="form-control"
+                            value="<?php echo $first_name ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="last_name">نام خانوادگی</label>
                     <div class="inline-input">
-                        <input type="text" name="last_name" id="last_name" class="form-control" value="مودی">
+                        <input type="text" name="last_name" id="last_name" class="form-control"
+                            value="<?php echo $last_name ?>">
                     </div>
                 </div>
 
@@ -103,4 +125,4 @@
     </main><!--.main-->
 </div><!--.panel-container-->
 
-<?php include('parts/panel-footer.php')?>
+<?php include('parts/panel-footer.php') ?>

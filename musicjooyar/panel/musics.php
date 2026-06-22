@@ -10,7 +10,7 @@
                     <h1>لیست موزیک ها</h1>
                 </div>
                 <div class="panel-menu-actions">
-                    <a href="music.html" class="btn btn-secondary">
+                    <a href="music.php" class="btn btn-secondary">
                         + موزیک جدید
                     </a>
                 </div>

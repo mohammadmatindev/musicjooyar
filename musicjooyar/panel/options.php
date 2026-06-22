@@ -1,6 +1,6 @@
-<?php include('parts/panel-header.php')?>
+<?php include('./parts/panel-header.php')?>
     <div class="panel-container glow-box">
-    <?php include('parts/panel-sidebar.php')?>
+    <?php include('./parts/panel-sidebar.php')?>
 
         <main class="main">
             <header>
@@ -54,4 +54,4 @@
             </div><!--.main-content-->
         </main><!--.main-->
     </div><!--.panel-container-->
-<?php include('parts/panel-header.php')?>
+<?php include('./parts/panel-footer.php')?>

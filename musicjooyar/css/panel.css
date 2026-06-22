@@ -982,7 +982,20 @@ p.music-item-title .mj-close-circle {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 50%;
+    height: 0%;
+}
+
+.profile-image-actions.no-avatar .delete-profile{
+    display: none;
+}
+.change-avatar span:first-child{
+    display: none;
+}
+.profile-image-actions.no-avatar .change-avatar span:first-child{
+    display: inline;
+}
+.profile-image-actions.no-avatar .change-avatar span:last-child{
+    display: none;
 }
 
 .inline-input {

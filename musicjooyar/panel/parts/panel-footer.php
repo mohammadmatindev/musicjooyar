@@ -2,6 +2,7 @@
 <script src="../js/select2.full.min.js"></script>
 <script src="../js/apexcharts.js"></script>
 <script src="../js/script.js"></script>
+<script src="../js/croppie.js"></script>
 <script>
     var options = {
         chart: {

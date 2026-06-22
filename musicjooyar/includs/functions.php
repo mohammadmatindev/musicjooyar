@@ -100,8 +100,9 @@ function set_login_session($user_id)
     ]);
 }
 
-function redirect($path){
-    header("Location: ". $path);
+function redirect($path)
+{
+    header("Location: " . $path);
     exit;
 }
 
@@ -114,16 +115,134 @@ function get_page_name()
 {
     $script_filename = $_SERVER['SCRIPT_FILENAME'];
     return pathinfo($script_filename)["filename"];
-  
+
 }
 
-function get_user_id(){
+function get_user_id()
+{
     return $_SESSION['user_id'];
 }
 
-function get_user_current(){
-    if(is_user_login()){
-        return get_user_by("ID",get_user_id());
+function get_user_current()
+{
+
+    if (is_user_login()) {
+        global $current_user;
+        if (!$current_user) {
+            $current_user = get_user_by("ID", get_user_id());
+        }
+        return $current_user;
     }
     return false;
 }
+
+function logout()
+{
+    if (is_user_login()) {
+        unset($_SESSION['user_id']);
+    }
+
+}
+
+function genarate_otp($len)
+{
+    $otp = "";
+
+    for ($i = 0; $i < $len; $i++) {
+        if (!$i) {
+            $otp .= rand(1, 9);
+        } else {
+            $otp .= rand(0, 9);
+        }
+    }
+    ;
+
+    return $otp;
+}
+
+function is_panel_page($page)
+{
+    $pages = (array) $page;
+
+    return in_array(get_page_name(), $pages);
+}
+function put_active_class($page)
+{
+
+    echo is_panel_page($page) ? "active" : "";
+}
+
+
+function get_panel_page_title()
+{
+    $current_page = get_page_name();
+    $page_title = "پنل کاربری ";
+    $title = "";
+    $pages = [
+        "index" => "صفحه اصلی",
+        "musics" => "موزیک ها",
+        "music" => "ثبت یا ویرایش موزیک",
+        "comments" => "نظرات",
+        "categories" => "دسته بندی",
+        "favorites" => "علاقه مندی ها ",
+        "artists" => "خواننده ها ",
+        "profile" => "ویرایش پروفایل",
+        "users" => "کاربران",
+        "options" => "تنظیمات"
+    ];
+    if (isset($pages[$current_page])) {
+        $title = $page_title . " - " . $pages[$current_page];
+    }
+
+    return $title;
+}
+
+function get_user_avatar()
+{
+
+    $user = get_user_current();
+    $avatar = $user["avatar"];
+
+    if (!$avatar) {
+        $avatar = SITE_URL . "images/default-avatar.jpg";
+    }
+    return $avatar;
+
+}
+
+function get_user_fullname()
+{
+
+    $user = get_user_current();
+    
+    $full_name = trim($user["first_name"]. " " . $user["last_name"]);
+
+    if (!$full_name) {
+        $full_name = "بدون نام ";
+    }
+
+    return $full_name;
+
+
+}
+
+// Source - https://stackoverflow.com/a/4356295
+// Posted by Stephen Watkins, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-06-22, License - CC BY-SA 4.0
+
+function generateRandomString($length) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
+}
+
+
+
+
+

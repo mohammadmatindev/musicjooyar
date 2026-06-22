@@ -8,11 +8,11 @@ jQuery(document).ready(function ($) {
     // functions 
 
 
-    function start_time(minutess, elemet, end = false) {
+    function start_time(second, elemet, end = false) {
 
         if (end) { clearInterval(interval); } else {
 
-            let timer = parseInt(minutess) * 60;
+            let timer = parseFloat((second % 3600) / 60) * 60;
             let minutes, seconds;
 
             interval = setInterval(function () {
@@ -74,13 +74,190 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    function check_username() {
 
+
+        let data = $("#form-edit-profile #username").serializeArray();
+        let username = $("#form-edit-profile #username").val().trim();
+        let check_field = $(".field-exists-check")
+        let check_form_group = $(".field-duplicate-check")
+        data.push({ name: "update", value: "true" })
+        let btn = $(this).find("button")
+        console.log(username);
+        $.ajax({
+            type: "post",
+            url: "../check.php",
+            data: data,
+            dataType: "json",
+
+            beforeSend: function () {
+
+                check_field.removeClass("success error")
+                check_field.addClass("checking")
+
+            },
+            success: function (response) {
+
+                check_field.addClass("success")
+
+                $(".field-free p ").text(response.username_message)
+
+            },
+            complete: function () {
+                check_field.removeClass("checking")
+
+            },
+            error: function (response) {
+
+                check_field.addClass("error")
+                $(".field-exists p ").text(response.responseJSON.message)
+
+            }
+        });
+
+    }
 
 
     $('.close-croppie-modal').click(function () {
         $('#cropper-wrapper').removeClass('show');
+        croppie.destroy();
     });
 
+    // اینا برای کراپ عکس و ارسالش با AJAX
+    var croppie;
+
+    $("#avatar").change(function (e) {
+        e.preventDefault()
+        let file = e.target.files[0]
+        $("#cropper-wrapper").addClass("show")
+
+        // $(".croppie").croppie({
+        //     url: URL.createObjectURL(file)
+        // })
+
+        let croppie_el = document.querySelector(".croppie");
+        console.log(croppie_el)
+        croppie = new Croppie(croppie_el, {
+            viewport: { width: 200, height: 200, type: "circle" },
+            url: URL.createObjectURL(file)
+        })
+
+    })
+    // این برای  ارسال عکس کراپ شده اس  آپلود ام اینجاس 
+    $(".crop-croppie").click(function (e) {
+        e.preventDefault();
+
+        croppie.result('blob').then(function (crop_image) {
+
+            let form_data = new FormData;
+            form_data.append("user_avatar", crop_image, "avatar.png")
+
+            $.ajax({
+                type: "POST",
+                url: "../check.php ",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function (e) {
+                        if (e.lengthComputable) {
+                            let total = e.total;
+                            let uploaded = e.loaded;
+                            let percent = uploaded / total * 100;
+
+
+                            $(".profile-upload-progress").css('height', `${Math.round(percent)}%`)
+                        }
+
+                    })
+                    return xhr
+                },
+                beforeSend: function () {
+                    $(".profile-image-actions").removeClass("no-avatar")
+                },
+                success: function (response) {
+                    console.log(response.avatar);
+                    Swal.fire({
+                        title: "TICKED",
+                        text: "عجیبه ولی رواله ! ",
+                        icon: "success"
+                    });
+                    $(".sidebar-avatar").attr('src', response.avatar)
+
+                    $('#cropper-wrapper').removeClass('show');
+                    croppie.destroy();
+
+
+                },
+                error: function (jqXHR) { console.log("Error") },
+                complete: function () {
+                    $(".profile-upload-progress").css('height', `0%`)
+                }
+
+            });
+
+        });
+    })
+
+
+    // برای حذف پروفایله
+
+    $(".delete-profile").click(function (e) {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: "برا حذف تصویرت پروفت خیالی داری ؟",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "بله",
+            cancelButtonText: "خیر",
+            reverseButtons: true
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "GET",
+                    url: "../check.php",
+                    data: {
+                        "deleted": true
+                    },
+                    success: function (response) {
+
+                         $(".sidebar-avatar").attr('src', response.avatar)
+                        $(".profile-image-actions").addClass("no-avatar")
+                        Swal.fire({
+                            title: "TICKED",
+                            text: response.message,
+                            icon: "success"
+                        });
+
+
+
+
+                    },
+                    error: function (jqXHR) {
+                        Swal.fire({
+                            title: "NOT TICKED",
+                            text: jqXHR.responseJSON.message,
+                            icon: "error"
+                        });
+
+                    }
+                });
+
+            }
+        });
+    })
 
     // Login and verify for code
 
@@ -114,7 +291,7 @@ jQuery(document).ready(function ($) {
 
                     if (response.message == "NEXT") {
 
-                        start_time("3", 'timer');
+                        start_time(response.expire, 'timer');
 
                         $("#error_bax").removeClass("error");
 
@@ -199,7 +376,7 @@ jQuery(document).ready(function ($) {
                     });
 
                     window.location = response.redirect_path
-                    
+
                     $("#btn").attr("disabled", true)
                     $("#in_code").attr("disabled", true)
 
@@ -230,8 +407,87 @@ jQuery(document).ready(function ($) {
 
     })
 
+    $(".menu-logout").click(function (e) {
+        e.preventDefault();
+
+        let href = $(this).attr("href");
 
 
-});
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: "btn btn-success",
+                cancelButton: "btn btn-danger"
+            },
+            buttonsStyling: false
+        });
+        swalWithBootstrapButtons.fire({
+            title: "برا خروج از حساب کاربری اصمینان دارید ؟",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "بله",
+            cancelButtonText: "خیر",
+            reverseButtons: true
+        }).then((result) => {
 
+            if (result.isConfirmed) {
+
+                window.location.href = href
+
+            }
+        });
+
+
+
+    })
+
+    $("#form-edit-profile").submit(function (e) {
+        e.preventDefault();
+        let data = $(this).serializeArray();
+        data.push({ name: "update", value: "true" })
+        let btn = $(this).find("button")
+        $.ajax({
+            type: "post",
+            url: "../check.php",
+            data: data,
+            dataType: "json",
+
+            beforeSend: function () {
+
+                btn.addClass("loading")
+
+            },
+            success: function (response) {
+                Swal.fire({
+                    title: "SUCCESS",
+                    text: response.message,
+                    icon: "success"
+                });
+
+
+            },
+            complete: function () {
+                btn.removeClass("loading")
+
+            },
+            error: function (response) {
+                console.log(response)
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.responseJSON.message,
+                    icon: "error"
+                });
+            }
+        });
+    })
+
+    var check_username_timer;
+    $("#form-edit-profile #username").keyup(function () {
+        if (check_username_timer) {
+            clearInterval(check_username_timer)
+        }
+        check_username_timer = setTimeout(check_username, 500);
+
+    });
+})
 jQuery('.select2').select2();
