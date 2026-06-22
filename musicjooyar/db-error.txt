@@ -24,3 +24,20 @@
 2026-06-17 15:08:12  => Incorrect datetime value: 'Y-m-d H:i:s'
 2026-06-17 15:09:02  => Incorrect datetime value: 'Y-m-d H:i:s'
 2026-06-17 15:09:39  => You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '15:09:39 WHERE `ID` = 60' at line 1
+2026-06-20 10:03:01  => Data too long for column 'phone' at row 1
+2026-06-20 10:03:04  => Data too long for column 'phone' at row 1
+2026-06-20 10:03:04  => Data too long for column 'phone' at row 1
+2026-06-20 10:03:26  => Data too long for column 'phone' at row 1
+2026-06-20 10:05:03  => Data too long for column 'phone' at row 1
+2026-06-20 10:05:26  => Data too long for column 'phone' at row 1
+2026-06-20 10:05:26  => Data too long for column 'phone' at row 1
+2026-06-20 10:05:51  => Data too long for column 'phone' at row 1
+2026-06-20 10:05:51  => Data too long for column 'phone' at row 1
+2026-06-20 10:12:00  => Data too long for column 'phone' at row 1
+2026-06-20 10:12:25  => Data too long for column 'phone' at row 1
+2026-06-20 10:12:25  => Data too long for column 'phone' at row 1
+2026-06-20 10:12:27  => Data too long for column 'phone' at row 1
+2026-06-20 10:13:50  => Data too long for column 'phone' at row 1
+2026-06-20 10:16:30  => Data too long for column 'phone' at row 1
+2026-06-20 10:21:53  => Data too long for column 'phone' at row 1
+2026-06-20 13:19:23  => You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1

@@ -38,7 +38,7 @@
                         </a>
                         <span class="otp-resend-loading">در حال ارسال مجدد</span>
                     </div>
-                    <input type="hidden" name="phone" value="" class="phone-verify">
+                    <input type="hidden" name="token" value="" class="token-verify">
                     <button class="btn btn-primary btn-full" id="btn">
                         تأیید و ورود
                     </button>
@@ -52,7 +52,7 @@
                     <h1>ورود/ثبت نام</h1>
                     <div class="form-group">
                         <label for="phone">شماره همراه</label>
-                        <input type="text" id="phone" class="form-control ltr" maxlength="14" inputmode="tel" name="token" placeholder="Ex: 09123456789" required>
+                        <input type="text" id="phone" class="form-control ltr" maxlength="11" inputmode="tel" name="phone" placeholder="Ex: 09123456789" required>
                         <p class="input-error">پیام خطا</p>
                     </div>
                     <button class="btn btn-primary btn-full" id="btn_enter">

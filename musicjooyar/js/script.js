@@ -89,11 +89,14 @@ jQuery(document).ready(function ($) {
         let _btn = $(this).find("button")
         $(".form-group").removeClass("error");
         $(".input-error").text("");
+
+
         if (check_mobile($("#phone").val(), "error_msg", "welcome", "کد اشتباه است")) {
 
             let phone = $("#phone").val()
             let data = $(this).serializeArray()
             data.push({ name: "btn", value: "tick" })
+
             $.ajax({
                 type: "post",
                 url: "../check.php",
@@ -137,7 +140,7 @@ jQuery(document).ready(function ($) {
                         });
 
 
-
+                        $(".token-verify").val(response.token)
 
                     }
 
@@ -150,9 +153,12 @@ jQuery(document).ready(function ($) {
 
 
         } else {
-
+            Swal.fire({
+                title: "ERROR",
+                text: "شماره تلفنت درست نییییییییییییییی درستتتشششش کن دیگهههههههههههههههههههه ",
+                icon: "error"
+            });
             $(".form-group").addClass("error");
-            $(".input-error").text("شماره تلفنت درست نییییییییییییییی درستتتشششش کن دیگهههههههههههههههههههه ");
         }
 
 
@@ -185,9 +191,18 @@ jQuery(document).ready(function ($) {
 
 
                     $("#btn").text("در حال ورود")
+
+                    Swal.fire({
+                        title: "WELCOME",
+                        text: "خوش اومدی !!!",
+                        icon: "success"
+                    });
+
+                    window.location = response.redirect_path
+                    
                     $("#btn").attr("disabled", true)
                     $("#in_code").attr("disabled", true)
-                    
+
 
 
 

@@ -9,8 +9,10 @@ $token = token_genarator(5);
 if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
 
 
-    $phone = trim($_POST["token"]);
+    $phone = trim($_POST["phone"]);
     $code = rand(1, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+
+
 
 
     if (empty($phone)) {
@@ -21,11 +23,13 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
 
     }
 
+
     if (!$phone) {
         send_json([
             "message" => "Number Phone NotFound"
         ]);
     }
+
 
     $response = [
         "message" => "NEXT",
@@ -52,7 +56,7 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
             "status" => "pending",
             'try_conut' => 0,
             'sms_id' => "0",
-            "token"=> $token,
+            "token" => $token,
             'used_at' => date('Y-m-d H:i:s'),
             'expire_date' => date('Y-m-d H:i:s', strtotime("+180 seconds")),
             'created_at' => date('Y-m-d H:i:s'),
@@ -65,13 +69,13 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
             send_json([
                 "message" => "OH , I can't load , ERROR ",
 
-            ]);
+            ], 404);
 
         }
 
         send_json([
             "message" => "NEXT",
-            "token"=>$token
+            "token" => $token
 
         ]);
 
@@ -82,12 +86,10 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "tick") {
 
 if (isset($_POST["btn"]) && $_POST["btn"] == "check") {
 
-    $phone = trim($_POST["token"]);
+    $token_user = trim($_POST["token"]);
     $otp = trim($_POST["otp"]);
-    $sql = "SELECT * FROM `code_status` WHERE phone = '$phone'  ";
+    $sql = "SELECT * FROM `code_status` WHERE token = '$token_user'  ";
     $res = db_query($sql);
-
-
 
     if (!$res) {
         send_json([
@@ -97,13 +99,13 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "check") {
     // گرفتن اطلاعاعت  
 
     $otp_row = mysqli_fetch_assoc($res);
-    
-     $otp_id = $otp_row["ID"];
+
+    $otp_id = $otp_row["ID"];
 
     /*  بررسی کردن اینکه داده گرفته شده از دیتابیس نتیجه یا ردیفی داره یا نه 
         برای بررسی درست وارد کردن کد هم هست 
     */
-    
+
     if (!$res->num_rows) {
 
         send_json([
@@ -117,7 +119,7 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "check") {
 
     if ($otp_row["code"] != $otp) {
 
-       
+
 
         db_query("UPDATE `code_status` SET `try_conut`=`try_conut` + 1 WHERE `ID` = $otp_id;");
 
@@ -156,15 +158,39 @@ if (isset($_POST["btn"]) && $_POST["btn"] == "check") {
             "message" => "VERY TRY :("
         ], 400);
 
-        exit;
+
 
     }
 
-    $now=date('Y-m-d H:i:s');
+    $now = date('Y-m-d H:i:s');
 
-    var_dump(db_query("UPDATE `code_status` SET `status`='used',`used_at` = '$now' WHERE `ID` = $otp_id;"));
+    db_query("UPDATE `code_status` SET `status`='used',`used_at` = '$now' WHERE `ID` = $otp_id;");
+
+    // گرفتن تلفن کاربر برای ساخت کاربر 
+
+    $phone_user = $otp_row["phone"];
+
+    // تابع ساخت یا گرفتن کاربر با تلفن
+
+    $user = get_or_create_user_by_phone($phone_user);
+
+    // اگر کاربری نبود این کار ها رو بکنه
+
+    if (!$user) {
+        send_json([
+            "message" => "ERROR FROM SERVER :( "
+        ], 500);
+    }
+
+    // کاربر بسازه ID برای session اگر هیچ مشکلی نبود
 
 
+    set_login_session($user['ID']);
+
+    send_json([
+        "message" => "ENTER",
+        "redirect_path" => site_url("panel")
+    ]);
 
 }
 
