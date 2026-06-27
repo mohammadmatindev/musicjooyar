@@ -1,7 +1,7 @@
-<?php include('parts/panel-header.php')?>
+<?php include('parts/panel-header.php') ?>
 
 <div class="panel-container glow-box">
-       <?php include('parts/panel-sidebar.php')?>
+    <?php include('parts/panel-sidebar.php') ?>
 
     <main class="main">
         <header>
@@ -17,20 +17,49 @@
 
             <div class="panel-main-content-cols">
                 <form action="#" id="category-form">
+                    <?php
+
+                    $cat_name = "";
+                    $cat_parent = 0;
+                    $cat_id = 0;
+
+                    if (isset($_GET['action']) && $_GET['action'] == "edit" && isset($_GET['id'])) {
+
+                        $cat_id = intval($_GET['id']);
+
+                        $cat = get_cats_by("ID", $cat_id);
+
+                        if ($cat) {
+                            $cat_name = $cat['title'];
+                            $cat_parent = $cat['parent'];
+                        }
+
+                        $cats = get_cats();
+
+
+                    }
+
+                    ?>
                     <h2>ثبت/ویرایش دسته بندی</h2>
                     <div class="form-group">
                         <label for="category_name">نام دسته</label>
-                        <input type="text" id="category_name" name="category_name" class="form-control" required>
+                        <input type="text" id="category_name" name="category_name" value="<?php echo $cat_name; ?>"
+                            class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="category_parent">دسته والد</label>
-                        <select name="category_parent" id="category_parent"  class="form-control select2" style="width: 100%">
+                        <select name="category_parent" id="category_parent" class="form-control select2"
+                            style="width: 100%">
+
                             <option value="0">بدون والد</option>
-                            <option value="1">پاپ</option>
-                            <option value="2">رپ</option>
-                            <option value="3">عروسی</option>
+                            <?php $cats = get_cats();
+                            foreach ($cats as $cat): ?>
+                                <option value="<?php echo $cat["ID"] ?>" <?php echo $cat_parent == $cat["ID"] ? 'selected' : "" ?>><?php echo $cat["title"] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+
+                    <input type="hidden" name="id" value="<?php echo $cat_id ?>">
 
                     <button class="btn btn-full">ثبت</button>
                 </form>
@@ -68,42 +97,47 @@
                     <div class="table-container">
                         <table id="table-comments">
                             <thead>
-                            <tr>
-                                <th style="width: 40px;">#</th>
-                                <th>
-                                    دسته
-                                </th>
-                                <th>والد</th>
-                                <th style="width: 80px;">تعداد</th>
-                                <th style="width: 80px;">عملیات</th>
-                            </tr>
+                                <tr>
+                                    <th style="width: 40px;">#</th>
+                                    <th>
+                                        دسته
+                                    </th>
+                                    <th>والد</th>
+                                    <th style="width: 80px;">تعداد</th>
+                                    <th style="width: 80px;">عملیات</th>
+                                </tr>
                             </thead>
                             <tbody>
+                                <?php if (!empty($cats)): ?>
+                                    <?php foreach ($cats as $cat_index => $cat): ?>
+                                        <tr>
+                                            <td><?php echo $cat_index ?></td>
+                                            <td>
+                                               <?php echo $cat["title"] ?>
+                                            </td>
+                                            <td>
+                                                -
+                                            </td>
+                                            <td>
+                                                <a href="#">-</a>
+                                            </td>
+                                            <td>
+                                                <a h ref="#" class="action action-delete">
+                                                    <i class="mj mj-trash"></i>
+                                                </a>
+                                                <a href="?action=edit&id=<?php echo $cat['ID']; ?>" class="action action-edit">
+                                                    <i class="mj mj-edit-2"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
 
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    رپ
-                                </td>
-                                <td>
-                                    نوین
-                                </td>
-                                <td>
-                                    <a href="#">21</a>
-                                </td>
-                                <td>
-                                    <a href="#" class="action action-delete">
-                                        <i class="mj mj-trash"></i>
-                                    </a>
-                                    <a href="#" class="action action-edit">
-                                        <i class="mj mj-edit-2"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <td colspan="5">ستون دسته نیست :(</td>
+                                    </tr>
 
-
-
-
+                                <?php endif; ?>
 
                             </tbody>
                         </table>
@@ -147,4 +181,4 @@
     </main><!--.main-->
 </div><!--.panel-container-->
 
-<?php include('parts/panel-footer.php')?>
+<?php include('parts/panel-footer.php') ?>

@@ -1088,6 +1088,11 @@ p.music-item-title .mj-close-circle {
     opacity: 1;
 }
 
+#cropper-wrapper-artist.show {
+    visibility: visible;
+    opacity: 1;
+}
+
 #table-comments .comment-text{
     font-size: 14px;
 }

@@ -86,7 +86,7 @@ jQuery(document).ready(function ($) {
         console.log(username);
         $.ajax({
             type: "post",
-            url: "../check.php",
+            url: "../ajax/ajax-check-username.php",
             data: data,
             dataType: "json",
 
@@ -154,7 +154,7 @@ jQuery(document).ready(function ($) {
 
             $.ajax({
                 type: "POST",
-                url: "../check.php ",
+                url: "../ajax/ajax-upload-avatar.php ",
                 data: form_data,
                 cache: false,
                 contentType: false,
@@ -214,26 +214,26 @@ jQuery(document).ready(function ($) {
             buttonsStyling: false
         });
         swalWithBootstrapButtons.fire({
-            title: "برا حذف تصویرت پروفت خیالی داری ؟",
+            title: "برا حذف تصویرت پروفت مطی  ؟",
             text: "",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "بله",
-            cancelButtonText: "خیر",
+            confirmButtonText: "آره داداش حله ",
+            cancelButtonText: "نه بیخیال",
             reverseButtons: true
         }).then((result) => {
 
             if (result.isConfirmed) {
 
                 $.ajax({
-                    type: "GET",
-                    url: "../check.php",
+                    type: "DELETE",
+                    url: "../ajax/ajax-delete-avatar.php",
                     data: {
                         "deleted": true
                     },
                     success: function (response) {
 
-                         $(".sidebar-avatar").attr('src', response.avatar)
+                        $(".sidebar-avatar").attr('src', response.avatar)
                         $(".profile-image-actions").addClass("no-avatar")
                         Swal.fire({
                             title: "TICKED",
@@ -276,7 +276,7 @@ jQuery(document).ready(function ($) {
 
             $.ajax({
                 type: "post",
-                url: "../check.php",
+                url: "../ajax/ajax-login.php",
                 data: data,
                 dataType: "json",
 
@@ -353,7 +353,7 @@ jQuery(document).ready(function ($) {
         console.log(data)
         $.ajax({
             type: "post",
-            url: "../check.php",
+            url: "../ajax/ajax-verify-login.php",
             data: data,
             dataType: "json",
 
@@ -489,5 +489,237 @@ jQuery(document).ready(function ($) {
         check_username_timer = setTimeout(check_username, 500);
 
     });
+
+
+    $("#category-form").submit(function (e) {
+        e.preventDefault();
+
+        let data = $(this).serializeArray();
+        data.push({ name: "setcategory", value: "accept" })
+        let btn = $(this).find("button")
+        $.ajax({
+            type: "post",
+            url: "../ajax/category/save.php",
+            data: data,
+            dataType: "json",
+
+            beforeSend: function () {
+
+                btn.addClass("loading")
+
+            },
+            success: function (response) {
+                Swal.fire({
+                    title: "SUCCESS",
+                    text: response.message,
+                    icon: "success"
+                });
+
+
+
+                $(response.item).appendTo("#category_parent")
+
+            },
+            complete: function () {
+                btn.removeClass("loading")
+
+            },
+            error: function (response) {
+                console.log(response)
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.responseJSON.message,
+                    icon: "error"
+                });
+            }
+        });
+
+
+    })
+
+    $("#artist-form").submit(function (e) {
+        e.preventDefault();
+
+        let data = $(this).serializeArray();
+        data.push({ name: "add_artisit", value: "ticked" })
+        console.log(data);
+        let btn = $(this).find("button")
+        $.ajax({
+            type: "post",
+            url: "../ajax/artist/save.php",
+            data: data,
+            dataType: "json",
+
+            
+
+            beforeSend: function () {
+
+                btn.addClass("loading")
+
+            },
+            success: function (response) {
+                Swal.fire({
+                    title: "SUCCESS",
+                    text: response.message,
+                    icon: "success",
+                    timer: 2500
+
+                });
+
+                // if (response.redirect_path) {
+                //     setTimeout(function () { window.location.href = response.redirect_path }, 2500)
+                // }
+
+
+
+                $(response.item).appendTo("#category_parent")
+
+            },
+            complete: function () {
+                btn.removeClass("loading")
+
+            },
+            error: function (response) {
+                console.log(response)
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.responseJSON.message,
+                    icon: "error"
+                });
+            }
+        });
+        
+
+
+    })
+
+    $("#birthdate").pDatepicker({
+        format: 'YYYY/MM/DD',
+        viewMode: 'year',
+        autoClose: true,
+        altField: '#birthdate_real',
+        altFieldFormatter: function (timestamp) {
+            let date = new Date(timestamp);
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            let day = date.getDate();
+
+            if (month < 10) {
+
+                month = '0' + month
+
+            }
+            if (day < 10) {
+
+                day = '0' + day
+
+            }
+
+
+            return `${year}-${month}-${day}`
+        }
+    });
+
+
+    // اینا برای کراپ عکس و ارسالش با AJAX
+    var croppie;
+
+    $("#artist_avatar").change(function (e) {
+        e.preventDefault()
+        let file = e.target.files[0]
+        $("#cropper-wrapper").addClass("show")
+
+
+        // $(".croppie").croppie({
+        //     url: URL.createObjectURL(file)
+        // })
+
+        let croppie_el = document.querySelector(".croppie");
+        console.log(croppie_el)
+        croppie = new Croppie(croppie_el, {
+            viewport: { width: 200, height: 200 },
+            url: URL.createObjectURL(file)
+        })
+
+    })
+    // این برای  ارسال عکس کراپ شده اس  آپلود ام اینجاس 
+    $(".crop-croppie-artist").click(function (e) {
+        e.preventDefault();
+
+
+        croppie.result('blob').then(function (crop_image) {
+
+            let form_data = new FormData;
+            form_data.append("artist_avatar", crop_image, "artist_avatar.png")
+
+            $.ajax({
+                type: "POST",
+                url: "../ajax/artist/ajax-upload-avatar-artist.php",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function (e) {
+                        if (e.lengthComputable) {
+                            let total = e.total;
+                            let uploaded = e.loaded;
+                            let percent = uploaded / total * 100;
+
+
+                            $(".uploading-percent").text(`${Math.round(percent)}%`)
+                        }
+
+                    })
+                    return xhr
+                },
+                beforeSend: function () {
+
+                    $(".artist-col-avatar").removeClass("uploaded")
+                    $(".artist-col-avatar").removeClass("error")
+                    $(".artist-col-avatar").addClass("uploading")
+                    
+
+                },
+                success: function (response) {
+
+                 
+
+                    $("#artist-avatar-url").val(response.avatar)
+
+                    $("#avatar-artist").attr('src', response.avatar)
+
+                   
+                    $(".artist-col-avatar").addClass("uploaded")
+                    $('#cropper-wrapper').removeClass('show');
+
+                    croppie.destroy();
+
+
+                },
+                error: function (jqXHR) { console.log("Error") },
+                complete: function () {
+                    $(".artist-col-avatar").addClass("uploaded")
+                    $(".artist-col-avatar").removeClass("error")
+                    $(".artist-col-avatar").removeClass("uploading")
+                    $(".uploading-percent").text(`0%`)
+                }
+
+            });
+
+        });
+    })
+
+    $(".remove-artist-avatar").click(function (e) {
+        e.preventDefault();
+
+        $(".artist-col-avatar").removeClass("uploaded")
+
+
+    })
+
+
+
 })
 jQuery('.select2').select2();

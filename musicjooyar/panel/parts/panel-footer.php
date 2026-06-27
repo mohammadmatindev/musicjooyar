@@ -1,6 +1,8 @@
 <script src="../js/jquery-3.7.1.min.js"></script>
 <script src="../js/select2.full.min.js"></script>
 <script src="../js/apexcharts.js"></script>
+<script src="../js/persian-date.min.js"></script>
+<script src="../js/persian-datepicker.min.js"></script>
 <script src="../js/script.js"></script>
 <script src="../js/croppie.js"></script>
 <script>

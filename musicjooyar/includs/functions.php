@@ -49,9 +49,9 @@ function site_url($path = "")
     return SITE_URL . $path;
 }
 
-function get_user_by($col, $val)
+function get_recoed_by($table, $col, $val)
 {
-    $sql = "SELECT * FROM users WHERE $col = '$val' LIMIT 1 ";
+    $sql = "SELECT * FROM $table WHERE $col = '$val' LIMIT 1 ";
     $res = db_query($sql);
     if ($res && $res->num_rows) {
         return mysqli_fetch_assoc($res);
@@ -60,6 +60,16 @@ function get_user_by($col, $val)
     return false;
 
 }
+function get_user_by($col, $val)
+{
+
+    return get_recoed_by("users", $col, $val);
+
+
+
+}
+
+
 
 function current_time()
 {
@@ -214,8 +224,8 @@ function get_user_fullname()
 {
 
     $user = get_user_current();
-    
-    $full_name = trim($user["first_name"]. " " . $user["last_name"]);
+
+    $full_name = trim($user["first_name"] . " " . $user["last_name"]);
 
     if (!$full_name) {
         $full_name = "بدون نام ";
@@ -230,7 +240,8 @@ function get_user_fullname()
 // Posted by Stephen Watkins, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-06-22, License - CC BY-SA 4.0
 
-function generateRandomString($length) {
+function generateRandomString($length)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -242,7 +253,8 @@ function generateRandomString($length) {
     return $randomString;
 }
 
-function is_current_user_admin(){
+function is_current_user_admin()
+{
     $user = get_user_current();
     return $user && $user["role"] == "admin";
 
@@ -250,4 +262,48 @@ function is_current_user_admin(){
 
 
 
+// categories 
 
+function get_cats_by($col, $val)
+{
+    return get_recoed_by("categories", $col, $val);
+}
+
+function insert_cat($title, $parent = 0)
+{
+
+    $data = [
+        "title" => $title,
+        "parent" => $parent,
+        "created_at" => current_time()
+    ];
+    return db_insert("categories", $data);
+
+}
+
+function get_cats()
+{
+    $sql = "SELECT * FROM categories ORDER BY created_at DESC";
+    $res = db_query($sql);
+    if ($res && $res->num_rows) {
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return [] ; 
+}
+
+
+// artists 
+
+function insert_artist($data){
+    $data["created_at"] = current_time();
+    return db_insert("artists",$data);
+}
+
+function get_artisit_by($col, $val)
+{
+    return get_recoed_by("artists", $col, $val);
+}
+
+function get_artists(){
+
+}

@@ -5,3 +5,10 @@
 2026-06-19 15:24:44  => Unknown database 'musicjooyar'
 2026-06-19 15:24:48  => Unknown database 'musicjooyar'
 2026-06-19 15:25:02  => Unknown database 'musicjooyar'
+2026-06-27 12:09:59  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:10:23  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:10:34  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:10:50  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:12:44  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:12:57  => Table 'musicjooyar.artisits' doesn't exist
+2026-06-27 12:13:09  => Table 'musicjooyar.artisits' doesn't exist

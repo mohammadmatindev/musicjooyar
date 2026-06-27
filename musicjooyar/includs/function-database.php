@@ -17,7 +17,7 @@ function db_affected_row(){
     return mysqli_affected_rows( db() );
 }
 
-function db_escape( $string ){
+function db_escape( string $string ){
     return mysqli_real_escape_string( db(), $string );
 }
 
@@ -100,7 +100,8 @@ function db_update( $table, $update_data, $where_data ){
         if( $val === null ){
             $set_sql.= "$key = NULL, ";
         }else{
-            $val = db_escape( $val );
+           
+            $val = db_escape($val);
             $set_sql.= "$key = '$val', ";
         }
     }
@@ -131,6 +132,7 @@ function db_update( $table, $update_data, $where_data ){
         return false;
     }
 
+    
     return mysqli_affected_rows( db() );
 
 }

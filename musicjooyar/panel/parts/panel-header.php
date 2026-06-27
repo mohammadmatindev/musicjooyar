@@ -39,10 +39,12 @@ if( $page_name != "login" && !is_current_user_admin()){
     <title><?php echo get_panel_page_title() ?></title>
     <link rel="stylesheet" href="https://dl.daneshjooyar.com/mvie/Moodi_Hamed/assets/css/font-yekanbakh-vf.css">
     <link href="../css/select2.min.css" rel="stylesheet" />
+       <link rel="stylesheet" href="../css/persian-datepicker.min.css">
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/panel.css">
     <link rel="stylesheet" href="../css/croppie.css">
     <link rel="stylesheet" href="../css/musicjooyar-icons.css">
+    <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
