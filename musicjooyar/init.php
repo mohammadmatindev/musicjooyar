@@ -15,6 +15,10 @@ define("ABSPATH", __DIR__ . "/");
 
 define("INC_PATH", ABSPATH . "includs/");
 
+// مسیر گزارش ها
+
+define("REPORT_PATH", ABSPATH . "reports/");
+
 /*
 استفاده شده INC_PATH داخل کد پایین مشخص که چرا از 
 INC_PATH در اصل همون مسیر ثابت است که معمولا پوشه سایه + اون پوشه ایی که داخل این فایل هستن

@@ -7,7 +7,7 @@ function db(){
 
 function db_log( $db_error ){
     file_put_contents( 
-        'db-error.txt',
+        REPORT_PATH.'db-error'.date("Y-m-d H:i:s").'txt',
         date('Y-m-d H:i:s ') . ' => ' . $db_error . PHP_EOL,
         FILE_APPEND
     );
@@ -18,7 +18,7 @@ function db_affected_row(){
 }
 
 function db_escape( string $string ){
-    return mysqli_real_escape_string( db(), $string );
+    return mysqli_real_escape_string( db(), trim($string) );
 }
 
 function db_query( $sql ){

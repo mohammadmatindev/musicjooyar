@@ -542,7 +542,7 @@ jQuery(document).ready(function ($) {
 
         let data = $(this).serializeArray();
         data.push({ name: "add_artisit", value: "ticked" })
-      
+
         let btn = $(this).find("button")
         $.ajax({
             type: "post",
@@ -550,7 +550,7 @@ jQuery(document).ready(function ($) {
             data: data,
             dataType: "json",
 
-            
+
 
             beforeSend: function () {
 
@@ -588,7 +588,7 @@ jQuery(document).ready(function ($) {
                 });
             }
         });
-        
+
 
 
     })
@@ -679,18 +679,18 @@ jQuery(document).ready(function ($) {
                     $(".artist-col-avatar").removeClass("uploaded")
                     $(".artist-col-avatar").removeClass("error")
                     $(".artist-col-avatar").addClass("uploading")
-                    
+
 
                 },
                 success: function (response) {
 
-                 
+
 
                     $("#artist-avatar-url").val(response.avatar)
 
                     $("#avatar-artist").attr('src', response.avatar)
 
-                   
+
                     $(".artist-col-avatar").addClass("uploaded")
                     $('#cropper-wrapper').removeClass('show');
 
@@ -719,6 +719,62 @@ jQuery(document).ready(function ($) {
 
     })
 
+    $("#form-save-music").submit(function (e) {
+        e.preventDefault();
+
+        let data = $(this).serializeArray();
+        data.push({ name: "save_music", value: "reved" })
+
+        let btn = $(this).find("button")
+        $.ajax({
+            type: "post",
+            url: "../ajax/music/save.php",
+            data: data,
+            dataType: "json",
+
+
+
+            beforeSend: function () {
+
+                btn.addClass("loading")
+
+            },
+            success: function (response) {
+                console.log(response);
+
+                Swal.fire({
+                    title: "SUCCESS",
+                    text: response.message,
+                    icon: "success",
+                    timer: 2500
+
+                });
+
+
+
+                if (response.redirect_path) {
+                    setTimeout(function () { window.location.href = response.redirect_path }, 2500)
+                }
+
+
+            },
+            complete: function () {
+                btn.removeClass("loading")
+
+            },
+            error: function (response) {
+                console.log(response)
+                // Swal.fire({
+                //     title: "ERROR",
+                //     text: response.responseJSON.message,
+                //     icon: "error"
+                // });
+            }
+        });
+
+
+
+    })
 
 
 })

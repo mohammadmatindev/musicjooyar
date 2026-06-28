@@ -17,7 +17,7 @@ if (!is_current_user_admin()) {
 if (isset($_POST['add_artisit']) && $_POST['add_artisit'] == "ticked") {
 
     $art_id = isset($_POST["id"]) ? db_escape($_POST["id"]) : 0;
-
+    
     $art_name = isset($_POST["name"]) ? db_escape($_POST["name"]) : NULL;
     $art_family = isset($_POST["family"]) ? db_escape($_POST["family"]) : NULL;
     $art_birthdate = isset($_POST["birthdate_real"]) ? db_escape($_POST["birthdate_real"]) : NULL;

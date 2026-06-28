@@ -315,3 +315,23 @@ function get_artists()
     return [];
 }
 
+// music 
+
+function get_music_by($field, $val)
+{
+
+    return get_recoed_by("musics", $field, $val);
+
+}
+
+function get_music($music_id){
+    return get_music_by("ID",$music_id);
+}
+
+function selected($val){
+    echo $val ? "selected" : "";
+}
+
+function get_music_artist_ids($id){
+    // code here 18:25 -> 374
+}

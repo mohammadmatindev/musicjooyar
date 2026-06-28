@@ -1,541 +1,299 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>موزیکجویار - عصر پاییزی مرتضی پاشایی</title>
-    <link rel="stylesheet" href="https://dl.daneshjooyar.com/mvie/Moodi_Hamed/assets/css/font-yekanbakh-vf.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/musicjooyar-icons.css">
-</head>
+<?php include('parts/panel-header.php') ?>
+
 <body>
-<div class="container">
-    <nav id="menu">
-        <div class="menu-right">
-            <a href="/" class="logo">
-                <img src="images/logo-animated.svg" alt="Musicjooyar" width="210" height="91">
-            </a>
-            <div class="artists-menu">
-                <a href="#">
-                    <i class="mj mj-microphone-2"></i>
-                    خواننده ها
-                </a>
-            </div>
-        </div>
-        <div class="search-box"><!-- .show-results -->
-            <form action=""><!-- .loading -->
-                <label for="search" style="font-size: 0">جستجو در سایت</label>
-                <input type="search" id="search" name="search" placeholder="جستجو کنید"/>
-                <button>
-                    <i class="mj mj-search-normal-1"></i>
-                    <img src="images/loading-spinner.svg" alt="Loader" width="36" height="36">
-                </button>
-            </form>
-            <div class="search-result">
-                <div class="result-items">
-                    <a href="#">
-                        <div class="music-result-right">
-                            <img src="images/music-cover.jpg" alt="Music" width="48" height="48px">
-                            <div class="music-result-info">
-                                <p>عصر پاییزی</p>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span class="music-result-duration">04:18</span>
-                    </a>
-                    <a href="#">
-                        <div class="music-result-right">
-                            <img src="images/music-cover.jpg" alt="Music" width="48" height="48px">
-                            <div class="music-result-info">
-                                <p>عصر پاییزی</p>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span class="music-result-duration">04:18</span>
-                    </a>
-                    <a href="#">
-                        <div class="music-result-right">
-                            <img src="images/music-cover.jpg" alt="Music" width="48" height="48px">
-                            <div class="music-result-info">
-                                <p>عصر پاییزی</p>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span class="music-result-duration">04:18</span>
-                    </a>
-                    <a href="#">
-                        <div class="music-result-right">
-                            <img src="images/music-cover.jpg" alt="Music" width="48" height="48px">
-                            <div class="music-result-info">
-                                <p>عصر پاییزی</p>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span class="music-result-duration">04:18</span>
+    <div class="panel-container glow-box">
+        <?php include('parts/panel-sidebar.php') ?>
+
+        <?php
+
+        $music_title = "";
+        $music_content = "";
+        $music_q320 = "";
+        $music_q128 = "";
+        $music_cover = "";
+        $music_status = "draft";
+
+
+        $music_id = 0;
+
+        if (isset($_GET['action']) && $_GET['action'] == "edit" && isset($_GET['id'])) {
+
+            $music_id = intval($_GET['id']);
+
+            $music = get_music($music_id);
+
+
+            if ($music) {
+
+                $music_title = $music["title"];
+                $music_content = $music["content"];
+                $music_q320 = $music["quality_320"];
+                $music_q128 = $music["quality_128"];
+                $music_cover = $music["cover"];
+                $music_status = $music["status"];
+
+            } else {
+                $music_id = 0;
+            }
+
+
+
+        }
+
+        ?>
+
+        <main class="main">
+            <header>
+                <div class="panel-menu-title">
+                    <i class="mj mj-music"></i>
+                    <h1>
+
+                        <?php if ($music_id): ?>
+                            <?php echo "ویرایش موزیک " . "  <  " . $music_title . "  >  " ?>
+                        <?php else: ?>
+                            + موزیک جدید
+                        <?php endif; ?>
+                        </a>
+                    </h1>
+                </div>
+                <div class="panel-menu-actions">
+                    <a href="#" class="btn btn-secondary">
+                        + موزیک جدید
                     </a>
                 </div>
-                <div class="search-no-result">
-                    نتیجه ای یافت نشد
-                </div>
-                <!--<a href="#" class="btn btn-primary btn-full">
-                    مشاهده همه نتایج
-                </a>-->
-            </div>
-        </div>
-        <div class="menu-left">
-            <a href="panel/login.html" class="btn btn-primary">
-                <i class="mj mj-user"></i>
-                ورود/ثبت نام
-            </a>
-            <div class="profile-menu">
-                <div class="user-about">
-                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="46" height="46">
-                    <div class="user-names">
-                        <strong>سلام، حامد</strong>
-                        <p>پروفایل کاربری</p>
-                    </div>
-                    <i class="mj mj-arrow-head-down"></i>
-                </div>
-                <div class="profile-menu-items">
-                    <a href="#" class="profile-menu-panel">
-                        <i class="mj mj-user"></i>
-                        پروفایل کاربری
-                    </a>
-                    <a href="#" class="profile-menu-favorites">
-                        <i class="mj mj-heart-filled"></i>
-                        علاقمندی ها
-                    </a>
-                    <a href="#" class="profile-menu-logout">
-                        <i class="mj mj-logout"></i>
-                        خروج از حساب
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-    
-    <div class="music-sides">
-        <div class="music-wrapper">
-            <div class="music-container">
-                <header>
-                    <img src="images/music-cover.jpg" alt="Music cover" width="240" height="240">
-                    <div class="music-info">
-                        <div class="music-title">
-                            <h1>
-                                <i class="mj mj-music"></i>
-                                آهنگ عصر پاییزی مرتضی پاشایی
-                            </h1>
-                            <div class="music-date">
-                                <i class="mj mj-calendar-edit"></i>
-                                16 دی 1405
+            </header>
+            <div class="main-content">
+
+                <form action="#" class="form-save-music" id="form-save-music">
+                    <div class="music-form-right">
+                        <div class="form-group">
+                            <label for="title">عنوان موزیک</label>
+                            <input type="text" name="title" id="title" value="<?php echo $music_title; ?>"
+                                class="form-control" placeholder="عنوان موزیک را وارد کنید" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">محتوای متنی موزیک</label>
+                            <textarea name="content" id="content" rows="10" class="form-control"
+                                placeholder="عنوان موزیک را وارد کنید" required><?php echo $music_content; ?></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="q320">
+                                آدرس فایل صوتی با کیفیت 320
+                                <span class="btn-upload">آپلود</a>
+                            </label>
+                            <input type="url" name="q320" value="<?php echo $music_q320; ?>" class="form-control ltr"
+                                placeholder="" readonly required>
+                            <input type="file" id="q320" accept="audio/mpeg" name="q320" style="display: none">
+                        </div>
+                        <div class="form-group">
+                            <label for="q128">
+                                آدرس فایل صوتی با کیفیت 128
+                                <span class="btn-upload">آپلود</span>
+                            </label>
+                            <input type="url" name="q128" value="<?php echo $music_q128; ?>" class="form-control ltr"
+                                placeholder="" readonly>
+                            <input type="file" id="q128" accept="audio/mpeg" name="q128" style="display: none">
+                        </div>
+                        <div class="music-metas">
+                            <div class="form-group">
+                                <label for="artist">خواننده</label>
+                                <select name="artists[]" id="artist" required multiple class="form-control select2"
+                                    style="width: 100%">
+                                    <?php foreach (get_artists() as $artist): ?>
+                                        <option value="<?php echo $artist["ID"] ?>">
+                                            <?php echo $artist["first_name"] . " " . $artist["last_name"]; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">دسته موزیک</label>
+                                <select name="categoryies[]" id="category" multiple required
+                                    class="form-control select2" style="width: 100%">
+                                    <?php foreach (get_cats() as $cats): ?>
+                                        <option value="<?php echo $cats["ID"] ?>">
+                                            <?php echo $cats["title"]; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">وضعیت</label>
+                                <select name="status" id="status" required class="form-control" style="width: 100%">
+                                    <option value="draft" <?php selected($music_status == "draft") ?>>پیش نویس</option>
+                                    <option value="publish" <?php selected($music_status == "publish") ?>>منتشر شده
+                                    </option>
+                                    <option value="pending" <?php selected($music_status == "pending") ?>>درانتظار
+                                        بررسی</option>
+                                    <option value="delted" <?php selected($music_status == "delted") ?>>حذف شده
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group has-unit">
+                                <label for="duration">مدت زمان</label>
+                                <input type="text" name="duration" disabled id="duration" class="form-control"
+                                    placeholder="00:00">
+                                <span class="unit">دقیقه</span>
                             </div>
                         </div>
-                        <div class="music-tax">
-                            <div class="music-artists">
-                                <a href="#">
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32">
-                                    مرتضی پاشایی
-                                </a>
-                                <a href="#">
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32">
-                                    مرتضی پاشایی
-                                </a>
-                            </div><!--.music-artists-->
-                            <div class="music-categories">
-                                <a href="#">
-                                    <i class="mj mj-category"></i>
-                                    رپ
-                                </a>
-                                <a href="#">
-                                    <i class="mj mj-category"></i>
-                                    شاد بندری
-                                </a>
-                            </div><!--.music-categories-->
-                        </div><!--.music-tax-->
-                        <div class="music-status">
-                            <p class="music-view">
-                                <i class="mj mj-eye"></i>
-                                211 بازدید
+                        <button class="btn btn-primary">ذخیره/ویرایش موزیک</button>
+                        <input type="hidden" name="id" value="<?php echo $music_id; ?>">
+                    </div><!--.music-form-right-->
+
+                    <div class="music-form-left">
+
+                        <div class="cover-container"><!-- .file-hover, .error, .uploading, .uploaded -->
+                            <label for="cover" class="cover-uploader">
+                                <div class="cover-uploader-icons">
+                                    <img src="../images/icon-png.png" alt="Png" class="icon-png" width="142"
+                                        height="142">
+                                    <img src="../images/icon-jpg.png" alt="Png" class="jpg" width="142" height="142">
+                                </div>
+                                <p>کاور و تصویر موزیک را به اینجا بکشید</p>
+                                <p>یا</p>
+                                <input type="file" id="cover" name="cover" style="display: none;">
+                                <p class="click-for-upload">کلیک کنید</p>
+                                <p class="upload-drop-text">
+                                    فایل را رها کنید
+                                </p>
+                                <p class="uploading-error">
+                                    خطا در آپلود فایل
+                                </p>
+                                <div class="uploading-status"
+                                    style="background-image: url('../images/music-cover.jpg')">
+                                    <div class="uploading-text">
+                                        در حال بارگذاری فایل:
+                                        <strong class="uploading-percent">2%</strong>
+                                    </div>
+                                </div>
+                            </label>
+                            <div class="uploaded-image" style="background-image: url('../images/music-cover.jpg')">
+                                <i class="mj mj-trash delete-cover"></i>
+                            </div>
+                        </div><!--.cover-container-->
+
+                        <div class="music-uploader"><!-- .selected, .uploading, .uploaded, .error -->
+                            <label for="music128">
+                                <img src="../images/icon-mp3.png" alt="Mp3" width="92" height="92" loading="lazy">
+                                <div class="upload-music-text">
+                                    <p>موزیک/صوت را به اینجا بکشید</p>
+                                    <strong>یا کلیک کنید</strong>
+                                </div>
+                                <input type="file" name="music128" accept="audio/mpeg" id="music128">
+                            </label>
+                            <span class="music-quality quality-128">128kbps</span>
+                            <div class="music-item">
+                                <i class="mj mj-close music-cancel-upload"></i>
+                                <p class="music-item-title">
+                                    <i class="mj mj-tick-circle upload-status-icon"></i>
+                                    <i class="mj mj-close-circle upload-status-icon"></i>
+                                    <svg width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <style>
+                                            .spinner_d9Sa {
+                                                transform-origin: center
+                                            }
+
+                                            .spinner_qQQY {
+                                                animation: spinner_ZpfF 9s linear infinite
+                                            }
+
+                                            .spinner_pote {
+                                                animation: spinner_ZpfF .75s linear infinite
+                                            }
+
+                                            @keyframes spinner_ZpfF {
+                                                100% {
+                                                    transform: rotate(360deg)
+                                                }
+                                            }
+                                        </style>
+                                        <path
+                                            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" />
+                                        <rect class="spinner_d9Sa spinner_qQQY" x="11" y="6" rx="1" width="2"
+                                            height="7" />
+                                        <rect class="spinner_d9Sa spinner_pote" x="11" y="11" rx="1" width="2"
+                                            height="9" />
+                                    </svg>
+                                    <span class="uploader-music-title">Jazzab - Mostafa Ragheb & Hamid Hiraad -
+                                        320.mp3</span>
+                                    <span class="music-size">11.MB</span>
+                                </p>
+                                <div class="upload-progress-bar">
+                                    <div class="upload-progress">
+                                        <span>95%</span>
+                                    </div>
+                                </div>
+                                <audio src="" controls></audio>
+                            </div><!--.music-item-->
+                            <p class="error-text">
+                                <i class="mj mj-close-circle"></i>
+                                <span>حجم آپلود بیش از مورد نیاز است</span>
                             </p>
-                            <p class="music-view">
-                                <i class="mj mj-timer-1"></i>
-                                14:18
+                        </div><!--.music-container-->
+
+                        <div class="music-uploader"><!-- .selected, .uploading, .uploaded, .error -->
+                            <label for="music320">
+                                <img src="../images/icon-mp3.png" alt="Mp3" width="92" height="92" loading="lazy">
+                                <div class="upload-music-text">
+                                    <p>موزیک/صوت را به اینجا بکشید</p>
+                                    <strong>یا کلیک کنید</strong>
+                                </div>
+                                <input type="file" name="music320" accept="audio/mpeg" id="music320">
+                            </label>
+                            <span class="music-quality">320kbps</span>
+                            <div class="music-item">
+                                <i class="mj mj-close music-cancel-upload"></i>
+                                <p class="music-item-title">
+                                    <i class="mj mj-tick-circle upload-status-icon"></i>
+                                    <i class="mj mj-close-circle upload-status-icon"></i>
+                                    <svg width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <style>
+                                            .spinner_d9Sa {
+                                                transform-origin: center
+                                            }
+
+                                            .spinner_qQQY {
+                                                animation: spinner_ZpfF 9s linear infinite
+                                            }
+
+                                            .spinner_pote {
+                                                animation: spinner_ZpfF .75s linear infinite
+                                            }
+
+                                            @keyframes spinner_ZpfF {
+                                                100% {
+                                                    transform: rotate(360deg)
+                                                }
+                                            }
+                                        </style>
+                                        <path
+                                            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" />
+                                        <rect class="spinner_d9Sa spinner_qQQY" x="11" y="6" rx="1" width="2"
+                                            height="7" />
+                                        <rect class="spinner_d9Sa spinner_pote" x="11" y="11" rx="1" width="2"
+                                            height="9" />
+                                    </svg>
+                                    <span class="uploader-music-title">Jazzab - Mostafa Ragheb & Hamid Hiraad -
+                                        320.mp3</span>
+                                    <span class="music-size">11.MB</span>
+                                </p>
+                                <div class="upload-progress-bar">
+                                    <div class="upload-progress">
+                                        <span>95%</span>
+                                    </div>
+                                </div>
+                                <audio src="" controls></audio>
+                            </div><!--.music-item-->
+                            <p class="error-text">
+                                <i class="mj mj-close-circle"></i>
+                                <span>حجم آپلود بیش از مورد نیاز است</span>
                             </p>
-                        </div><!--.music-status-->
-                        <div class="music-favorite">
-                            <button class="favorite btn inactive btn-secondary"><!-- .active, .inactive, .loading -->
-                                <i class="mj mj-heart none-fav-icon"></i>
-                                <i class="mj mj-heart-filled fav-icon"></i>
-                                <span class="un-fav-text">حذف از علاقمندی ها</span>
-                                <span class="fav-text">افزودن به علاقمندی ها</span>
-                                <span class="fav-loading-text">صبر کنید</span>
-                            </button>
-                        </div><!--.music-favorite-->
-                        <div class="music-download">
-                            <a href="#" class="btn btn-success">
-                                <i class="mj mj-download"></i>
-                                دانلود با کیفیک 128
-                            </a>
-                            <a href="#" class="btn btn-success-solid">
-                                <i class="mj mj-download"></i>
-                                دانلود با کیفیک 320
-                            </a>
-                        </div><!--.music-download-->
-                    </div><!--.music-info-->
-                </header>
-                <audio src="" controls class="music-player"></audio>
-                <div class="music-text">
-                    <h2>
-                        <i class="mj mj-message-text"></i>
-                        متن موزیک
-                    </h2>
-                    <div class="music-lyric">
-                        <p>متن آهنگ یه قدمی فرهاد رادفرد</p>
-                        <p>گل بهشتی تو خود عشقی</p>
-                        <p>دلمو برده اون چشمای مشکی</p>
-                        <p>گل من چی شده چرا تو فکری</p>
-                        <p>بس تو که ماهی همش تو چشمی</p>
-                        <p>میزنه هردم واسه تو قلبم</p>
-                        <p>همه چی مال تو رز قشنگم</p>
-                        <p>چه جوری بردی این دلو از من</p>
-                        <p>عشق تو اون منه قبلو عوض کرد</p>
-                        <p>یه قدمی دور بشی از من</p>
-                        <p>میمیرم میمیرم میمیرم</p>
-                        <p>حسم بهته از ته قلبم</p>
-                        <p>عزیزم عزیزم عزیزم</p>
-                        <p>هستم تا تهش پای حرفم</p>
-                        <p>تو که میدونی بهت مریضم</p>
-                        <p>تو بری هرجا مثه سایه همیشه باهاتم</p>
-                        <p>مثه نفسی تو واسم نمیشه که حتی جدا شم</p>
-                        <p>دله به تو بنده واسه تو از همه این ادما کنده</p>
-                        <p>ببین چیکار کردی تو با اون منه غده یه دنده</p>
-                    </div>
-                </div><!--.music-text-->
-            </div><!--.music-container-->
-
-            <div id="comments">
-                <div class="login-to-comment">
-                    <i class="mj mj-warning-2"></i>
-                    برای ثبت دیدگاه وارد
-                    <a href="#">
-                        حساب کاربری
-                    </a>
-                    شوید
-                </div><!--.login-to-comment-->
-
-                <form id="submit-comment" class="comment-form" action="">
-                    <h2>
-                        <i class="mj mj-message"></i>
-                        ثبت دیدگاه
-                    </h2>
-                    <p>
-                        <strong>حامد مودی</strong>
-                        عزیز، لطفاً دثدگاه خود را درباره
-                        <strong>عصر جدید مرتضی پاشایی</strong>
-                        ثبت کنید
-                    </p>
-                    <div class="form-group form-comment-message">
-                        <label for="comment">متن دیدگاه شما</label>
-                        <div>
-                            <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32">
-                            <textarea name="comment" id="comment" class="form-control" cols="30" rows="5" placeholder="دیدگاه شما"></textarea>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary">ثبت دیدگاه</button>
-                </form><!--#submit-comment-->
-
-            </div><!--#comments-->
-
-            <div class="no-comment">
-                <img src="images/no-comments.svg" alt="No Comments" width="502" height="194">
-                <p>هنوز دیدگاهی ثبت نشده است</p>
-            </div><!--.no-comment-->
-
-            <div class="comment-list-section">
-                <h2>15 دیدگاه برای این موزیک ثبت شده است</h2>
-                <div class="comment-list">
-
-                    <div class="comment-item">
-                        <header>
-                            <div class="commenter">
-                                <div class="comment-author">
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32" loading="lazy">
-                                    <span>حامد مودی</span>
-                                </div>
-                                <div class="comment-date">
-                                    <i class="mj mj-calendar-edit"></i>
-                                    15 مهر 1405 ساعت 16:15
-                                </div>
-                            </div><!--.commenter-->
-                            <div class="comment-actions">
-                                <a href="#" class="btn btn-secondary">
-                                    <i class="mj mj-arrow-reply"></i>
-                                    پاسخ به دیدگاه
-                                </a>
-                                <a href="#" class="btn comment-like btn-success">
-                                    <i class="mj mj-like-1"></i>
-                                    <span>12</span>
-                                </a>
-                                <a href="#" class="btn comment-dislike btn-error">
-                                    <i class="mj mj-dislike-1"></i>
-                                    <span>4</span>
-                                </a>
-                            </div><!--.comment-actions-->
-                        </header>
-                        <div class="comment-content">
-                            <p>من امروز دوره کاتلین رایگان را تمام کردم</p>
-                            <p>مطالب را شیرین و کاربردی و قابل فهم بیان میکنید</p>
-                        </div>
-                    </div><!--.comment-item-->
-
-                    <div class="comment-item comment-has-reply">
-                        <header>
-                            <div class="commenter">
-                                <div class="comment-author">
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32" loading="lazy">
-                                    <span>حامد مودی</span>
-                                </div>
-                                <div class="comment-date">
-                                    <i class="mj mj-calendar-edit"></i>
-                                    15 مهر 1405 ساعت 16:15
-                                </div>
-                            </div><!--.commenter-->
-                            <div class="comment-actions">
-                                <a href="#" class="btn btn-secondary">
-                                    <i class="mj mj-arrow-reply"></i>
-                                    پاسخ به دیدگاه
-                                </a>
-                                <a href="#" class="btn comment-like btn-success">
-                                    <i class="mj mj-like-1"></i>
-                                    <span>12</span>
-                                </a>
-                                <a href="#" class="btn comment-dislike btn-error">
-                                    <i class="mj mj-dislike-1"></i>
-                                    <span>4</span>
-                                </a>
-                            </div><!--.comment-actions-->
-                        </header>
-                        <div class="comment-content">
-                            <p>من امروز دوره کاتلین رایگان را تمام کردم</p>
-                            <p>مطالب را شیرین و کاربردی و قابل فهم بیان میکنید</p>
-
-                            <div class="comment-item comment-reply-item comment-status-pending">
-                                <header>
-                                    <div class="commenter">
-                                        <div class="comment-author">
-                                            <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32" loading="lazy">
-                                            <span>حامد مودی</span>
-                                        </div>
-                                        <div class="comment-date">
-                                            <i class="mj mj-calendar-edit"></i>
-                                            15 مهر 1405 ساعت 16:15
-                                        </div>
-                                        <div class="comment-pending">
-                                            منتظر تأیید
-                                        </div>
-                                    </div><!--.commenter-->
-                                    <div class="comment-actions">
-                                        <a href="#" class="btn btn-secondary">
-                                            <i class="mj mj-arrow-reply"></i>
-                                            پاسخ به دیدگاه
-                                        </a>
-                                        <a href="#" class="btn comment-like btn-success">
-                                            <i class="mj mj-like-1"></i>
-                                            <span>12</span>
-                                        </a>
-                                        <a href="#" class="btn comment-dislike btn-error">
-                                            <i class="mj mj-dislike-1"></i>
-                                            <span>4</span>
-                                        </a>
-                                    </div><!--.comment-actions-->
-                                </header>
-                                <div class="comment-content">
-                                    <p>من امروز دوره کاتلین رایگان را تمام کردم</p>
-                                    <p>مطالب را شیرین و کاربردی و قابل فهم بیان میکنید</p>
-                                </div>
-                            </div><!--.comment-item-->
-
-                        </div>
-                    </div><!--.comment-item-->
-
-
-                    <div class="comment-item">
-                        <header>
-                            <div class="commenter">
-                                <div class="comment-author">
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32" loading="lazy">
-                                    <span>حامد مودی</span>
-                                </div>
-                                <div class="comment-date">
-                                    <i class="mj mj-calendar-edit"></i>
-                                    15 مهر 1405 ساعت 16:15
-                                </div>
-                            </div><!--.commenter-->
-                            <div class="comment-actions">
-                                <a href="#" class="btn btn-secondary">
-                                    <i class="mj mj-arrow-reply"></i>
-                                    پاسخ به دیدگاه
-                                </a>
-                                <a href="#" class="btn comment-like btn-success">
-                                    <i class="mj mj-like-1"></i>
-                                    <span>12</span>
-                                </a>
-                                <a href="#" class="btn comment-dislike btn-error">
-                                    <i class="mj mj-dislike-1"></i>
-                                    <span>4</span>
-                                </a>
-                            </div><!--.comment-actions-->
-                        </header>
-                        <div class="comment-content">
-                            <p>من امروز دوره کاتلین رایگان را تمام کردم</p>
-                            <p>مطالب را شیرین و کاربردی و قابل فهم بیان میکنید</p>
                         </div>
 
-                        <form id="reply-comment" class="comment-form" action="">
-                            <header>
-                                <h2>
-                                    <i class="mj mj-message"></i>
-                                    <span>ارسال پاسخ به «علیرضا اکبری»</span>
-                                </h2>
-                                <a href="#" class="btn btn-error cancel-reply">
-                                    <i class="mj mj-close"></i>
-                                    انصراف از پاسخ
-                                </a>
-                            </header>
-                            <div class="form-group form-comment-message">
-                                <label for="reply-comment-field">متن پاسخ شما</label>
-                                <div>
-                                    <img src="images/hamedmoody.jpg" alt="Hamed Moodi" width="32" height="32">
-                                    <textarea name="comment" id="reply-comment-field" class="form-control" cols="30" rows="5" placeholder="پاسخ شما"></textarea>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary">ثبت پاسخ</button>
-                        </form><!--#submit-comment-->
+                    </div><!--.music-form-left-->
+                </form><!--.table-filter-->
 
-                    </div><!--.comment-item-->
-
-
-                </div><!--.comment-list-->
-            </div>
-
-        </div>
-        <div class="music-sidebar">
-
-            <div class="sidebar-widget">
-                <h3>
-                    <i class="mj mj-microphone-2"></i>
-                    سایر موزیک های مرتضی پاشایی
-                </h3>
-                <div class="sidebar-music-list">
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                    <a href="#">
-                        <div class="sidebar-music-data">
-                            <img src="images/music-cover.jpg" alt="Asre Paeezi" width="48" height="48" loading="lazy">
-                            <div class="sidebar-music-title">
-                                <strong>عصر پاییزی</strong>
-                                <span>مرتضی پاشایی</span>
-                            </div>
-                        </div>
-                        <span>04:17</span>
-                    </a>
-                </div><!--.sidebar-music-list-->
-            </div><!--.sidebar-widget-->
-
-        </div><!--.music-sidebar-->
-    </div>
-    
-    
-    
-
-</div><!--.container-->
-
-<footer id="footer">
-    <div class="container">
-        <p class="designed-by">
-            طراحی شده برای دوره جامع
-            <a href="https://dnjy.ir/php">PHP</a>
-            دانشجویار
-        </p>
-        <div class="socials">
-            <a href="https://hamedmoody.ir">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28.865" height="28.865" viewBox="0 0 28.865 28.865">
-                    <g id="web" transform="translate(-1.5 -1.5)">
-                        <g id="web-2" data-name="web" transform="translate(1.5 1.5)">
-                            <g id="vector" transform="translate(0.627)">
-                                <path id="Path_147" data-name="Path 147" d="M23.773,9.328c-1.418.43-3.88,1.128-6.518,1.672A73.5,73.5,0,0,0,15.07,1.956,14.472,14.472,0,0,1,23.773,9.328Z" transform="translate(2.956 -1.329)" fill="#735bff"/>
-                                <path id="Path_148" data-name="Path 148" d="M17.442,11.565a27.589,27.589,0,0,1-4.277.4,27.591,27.591,0,0,1-4.277-.4A71.546,71.546,0,0,1,11,2.8c.134-.436.187-.607.279-.837.046-.115.093-.22.158-.357a14.632,14.632,0,0,1,3.524.009c.013.048.024.091.036.131.034.12.087.288.175.57l.009.03A72.486,72.486,0,0,1,17.442,11.565Z" transform="translate(0.64 -1.5)" fill="#735bff"/>
-                                <path id="Path_149" data-name="Path 149" d="M9.116,11A73.439,73.439,0,0,1,11.29,1.991l.011-.036A14.472,14.472,0,0,0,2.6,9.328C4.017,9.758,6.478,10.456,9.116,11Z" transform="translate(-1.715 -1.329)" fill="#735bff"/>
-                                <path id="Path_150" data-name="Path 150" d="M13.054,17.073a27.842,27.842,0,0,0,3.87-.313c-.569,2.725-1.3,5.244-1.709,6.593-.134.436-.187.607-.279.837-.046.115-.093.22-.158.358a14.641,14.641,0,0,1-3.448,0c-.066-.137-.112-.243-.158-.358-.092-.23-.145-.4-.279-.837C10.48,22,9.753,19.485,9.185,16.76A27.838,27.838,0,0,0,13.054,17.073Z" transform="translate(0.751 4.215)" fill="#735bff"/>
-                                <path id="Path_151" data-name="Path 151" d="M6.193,16.246c-1.787-.445-3.309-.891-4.237-1.176a14.465,14.465,0,0,0,9.586,9.586l-.011-.035a77.243,77.243,0,0,1-1.924-7.615C8.411,16.775,7.25,16.509,6.193,16.246Z" transform="translate(-1.956 3.582)" fill="#735bff"/>
-                                <path id="Path_152" data-name="Path 152" d="M24.62,15.081a77.225,77.225,0,0,1-7.615,1.924,77.264,77.264,0,0,1-1.924,7.615l-.011.035a14.465,14.465,0,0,0,9.586-9.586Z" transform="translate(2.955 3.582)" fill="#735bff"/>
-                            </g>
-                            <g id="vector_2" transform="translate(0 10.012)">
-                                <path id="Path_153" data-name="Path 153" d="M2.19,8.784A14.423,14.423,0,0,0,1.5,13.2a14.573,14.573,0,0,0,.109,1.782l.227.076h.006c.073.024,2.219.733,5.044,1.436.8.2,1.642.394,2.5.574a27.836,27.836,0,0,1-.313-3.87,24.615,24.615,0,0,1,.154-2.612C6.358,10.008,3.716,9.249,2.305,8.82l-.01,0Z" transform="translate(-1.5 -8.784)" fill="#729cfe"/>
-                                <path id="Path_154" data-name="Path 154" d="M1.61,13.323c.05.006.091.013.1.016l.037.01.015,0,.008,0,.008,0,.007,0S1.706,13.339,1.61,13.323Z" transform="translate(-1.459 -7.084)" fill="#729cfe"/>
-                                <path id="Path_155" data-name="Path 155" d="M16.918,10.592a24.579,24.579,0,0,1,.154,2.612,27.818,27.818,0,0,1-.313,3.87c2.725-.569,5.244-1.3,6.593-1.709.436-.134.607-.187.837-.279.115-.046.22-.093.358-.158a14.6,14.6,0,0,0,.1-1.724,14.426,14.426,0,0,0-.69-4.421l-.117.037C22.433,9.25,19.791,10.008,16.918,10.592Z" transform="translate(4.215 -8.784)" fill="#729cfe"/>
-                                <path id="Path_156" data-name="Path 156" d="M17.844,10.383a22.107,22.107,0,0,1,.124,2.223,27.612,27.612,0,0,1-.4,4.29,27.629,27.629,0,0,1-4.29.4,27.638,27.638,0,0,1-4.29-.4,27.622,27.622,0,0,1-.4-4.289,22.075,22.075,0,0,1,.124-2.223,29.644,29.644,0,0,0,4.566.419A29.644,29.644,0,0,0,17.844,10.383Z" transform="translate(1.154 -8.185)" fill="#729cfe"/>
-                            </g>
-                        </g>
-                    </g>
-                </svg>
-            </a>
-            <a href="https://t.me/hamedmoody">
-                <i class="mj mj-Telegram"></i>
-            </a>
-        </div>
-    </div>
-</footer>
-
-</body>
-</html>
+            </div><!--.main-content-->
+        </main><!--.main-->
+    </div><!--.panel-container-->
+    <?php include('parts/panel-footer.php') ?>
