@@ -324,14 +324,31 @@ function get_music_by($field, $val)
 
 }
 
-function get_music($music_id){
-    return get_music_by("ID",$music_id);
+function get_music($music_id)
+{
+    return get_music_by("ID", $music_id);
 }
 
-function selected($val){
+function selected($val)
+{
     echo $val ? "selected" : "";
 }
 
-function get_music_artist_ids($id){
+function get_music_artist_ids($id)
+{
+
+    $sql = "SELECT artist_id FROM music_artist WHERE music_id = $id";
+    $res = db_query($sql);
+    $resualt = [];
+    if ($res && $res->num_rows) {
+        $res_arr = mysqli_fetch_all($res,MYSQLI_ASSOC);
+
+        foreach ($res_arr as $row){
+            $resualt[]=intval($row["artist_id"]);
+        }
+    }
+
+    return $resualt;
+
     // code here 18:25 -> 374
 }
