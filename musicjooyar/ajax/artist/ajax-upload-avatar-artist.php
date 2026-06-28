@@ -56,18 +56,6 @@ if (!$moved) {
 
 $avatar_url = site_url($uploaded_real_path . $new_avatar_name);
 
-$res =db_update("artists", [
-    "avatar" => $avatar_url
-], [
-    "ID" => $user_id
-]);
-
-if(!$res){
-    send_json([
-    "message" => "یه مشکلی هَ :(  ",
-    "avatar" => $avatar_url
-],401);
-}
 
 send_json([
     "message" => "یه مشکلی نی :(  ",

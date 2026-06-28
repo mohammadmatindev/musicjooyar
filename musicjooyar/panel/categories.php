@@ -122,7 +122,7 @@
                                                 <a href="#">-</a>
                                             </td>
                                             <td>
-                                                <a h ref="#" class="action action-delete">
+                                                <a href="#" class="action action-delete">
                                                     <i class="mj mj-trash"></i>
                                                 </a>
                                                 <a href="?action=edit&id=<?php echo $cat['ID']; ?>" class="action action-edit">

@@ -50,6 +50,8 @@
 
                     }
 
+                    $artists = get_artists();
+
                     ?>
 
                     <h2>ثبت/ویرایش خواننده</h2>
@@ -79,7 +81,8 @@
                             </div>
                         </div>
 
-                        <div class="artist-col-avatar <?php echo $art_avatar ? 'uploaded':''; ?>"><!-- .uploaded, .uploading, .error, .file-hover -->
+                        <div class="artist-col-avatar <?php echo $art_avatar ? 'uploaded' : ''; ?>">
+                            <!-- .uploaded, .uploading, .error, .file-hover -->
                             <label for="artist_avatar" class="flex-cc flex-col">
                                 <i class="mj mj-image"></i>
                                 <p>تصویر خواننده</p>
@@ -103,7 +106,8 @@
                                 style="display: none;">
                             <div class="artist-avatar-image">
                                 <i class="mj mj-trash remove-artist-avatar"></i>
-                                <img src=".<?php echo $art_avatar; ?>" alt="Hamed Moodi" id="avatar-artist" width="64" height="64">
+                                <img src="<?php echo $art_avatar; ?>" alt="Hamed Moodi" id="avatar-artist" width="64"
+                                    height="64">
                             </div>
                         </div>
                     </div>
@@ -123,8 +127,9 @@
                             required><?php echo $art_description; ?></textarea>
                     </div>
                     <div class="form-group hide ">
-                   
-                        <input type="hideen" name="artist_avatar_url" class="form-control ltr " id="artist-avatar-url" placeholder="" readonly>
+
+                        <input type="hideen" name="artist_avatar_url" class="form-control ltr " id="artist-avatar-url"
+                            placeholder="" readonly>
                         <input type="file" id="artist_avatar" accept="image/*" name="artist_avatar"
                             style="display: none">
                     </div>
@@ -176,52 +181,41 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php if (!empty($artists)): ?>
+                                    <?php foreach ($artists as $artist): ?>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <div class="row-title">
+                                                    <img src="<?php echo $artist["avatar"] ?>"
+                                                        alt="<?php echo $artist["avatar"] != "" ? $artist["first_name"] : "Not found :)" ?>"
+                                                        width="32" height="32">
+                                                    <?php echo $artist["first_name"] != "" ? $artist["first_name"] : "" ?>
+                                                    <?php echo $artist["last_name"] != "" ? $artist["last_name"] : "" ?>
+                                                </div>
+                                            </td>
+                                            <td class="ltr">
+                                                <?php echo $artist["birthdate"] != "" ? jdate("Y/m/d", strtotime($artist["birthdate"])) : "" ?>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="action action-delete">
+                                                    <i class="mj mj-trash"></i>
+                                                </a>
+                                                <a href="?action=edit&id=<?php echo $artist["ID"]; ?>"
+                                                    class="action action-edit">
+                                                    <i class="mj mj-edit-2"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
 
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div class="row-title">
-                                            <img src="../images/hamedmoody.jpg" alt="Music Cover" width="32"
-                                                height="32">
-                                            حامد مودی
-                                        </div>
-                                    </td>
-                                    <td class="ltr">
-                                        1374/01/16
-                                    </td>
-                                    <td>
-                                        <a href="#" class="action action-delete">
-                                            <i class="mj mj-trash"></i>
-                                        </a>
-                                        <a href="?action=edit&id=<?php echo "id"; ?>" class="action action-edit">
-                                            <i class="mj mj-edit-2"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                    <?php endforeach; ?>
 
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div class="row-title">
-                                            <img src="../images/hamedmoody.jpg" alt="Music Cover" width="32"
-                                                height="32">
-                                            حامد مودی
-                                        </div>
-                                    </td>
-                                    <td class="ltr">
-                                        1374/01/16
-                                    </td>
-                                    <td>
-                                        <a href="#" class="action action-delete">
-                                            <i class="mj mj-trash"></i>
-                                        </a>
-                                        <a href="#" class="action action-edit">
-                                            <i class="mj mj-edit-2"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <?php else: ?>
 
-
+                                    <tr>
+                                        <td colspan="3">هیچ ندارم برای نمایش سطان :)</td>
+                                    </tr>
+                                <?php endif; ?>
 
                             </tbody>
                         </table>

@@ -542,7 +542,7 @@ jQuery(document).ready(function ($) {
 
         let data = $(this).serializeArray();
         data.push({ name: "add_artisit", value: "ticked" })
-        console.log(data);
+      
         let btn = $(this).find("button")
         $.ajax({
             type: "post",
@@ -566,9 +566,9 @@ jQuery(document).ready(function ($) {
 
                 });
 
-                // if (response.redirect_path) {
-                //     setTimeout(function () { window.location.href = response.redirect_path }, 2500)
-                // }
+                if (response.redirect_path) {
+                    setTimeout(function () { window.location.href = response.redirect_path }, 2500)
+                }
 
 
 

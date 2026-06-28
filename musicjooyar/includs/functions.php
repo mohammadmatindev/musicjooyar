@@ -288,15 +288,16 @@ function get_cats()
     if ($res && $res->num_rows) {
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
-    return [] ; 
+    return [];
 }
 
 
 // artists 
 
-function insert_artist($data){
+function insert_artist($data)
+{
     $data["created_at"] = current_time();
-    return db_insert("artists",$data);
+    return db_insert("artists", $data);
 }
 
 function get_artisit_by($col, $val)
@@ -304,6 +305,13 @@ function get_artisit_by($col, $val)
     return get_recoed_by("artists", $col, $val);
 }
 
-function get_artists(){
-
+function get_artists()
+{
+    $sql = "SELECT * FROM  artists ORDER BY created_at DESC";
+    $res = db_query($sql);
+    if ($res && $res->num_rows) {
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return [];
 }
+

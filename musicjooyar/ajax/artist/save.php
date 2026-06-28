@@ -36,7 +36,6 @@ if (isset($_POST['add_artisit']) && $_POST['add_artisit'] == "ticked") {
         "birthdate"     =>  $art_birthdate
     ]; 
 
-     var_dump($artists_data);
 
     if ($art_id) {
         $updated = db_update("artists", 
@@ -44,13 +43,18 @@ if (isset($_POST['add_artisit']) && $_POST['add_artisit'] == "ticked") {
        , [
             "ID" => $art_id
         ]);
+
+        
     } else {
         $art_id = db_insert("artists", $artists_data);
+
         if (!$art_id) {
+      
             send_json([
                 "message" => "مشتی گلی یه مشکلی هَ"
             ], 400);
         }
+
 
     }
 
