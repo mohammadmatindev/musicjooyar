@@ -899,7 +899,7 @@ p.music-item-title .mj-close-circle {
 }
 
 .upload-progress-bar .upload-progress {
-    width: 50%;
+    /* width: 50%; */
     left: 0;
     top: 0;
     bottom: 0;

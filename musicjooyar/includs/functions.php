@@ -341,14 +341,82 @@ function get_music_artist_ids($id)
     $res = db_query($sql);
     $resualt = [];
     if ($res && $res->num_rows) {
-        $res_arr = mysqli_fetch_all($res,MYSQLI_ASSOC);
+        $res_arr = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
-        foreach ($res_arr as $row){
-            $resualt[]=intval($row["artist_id"]);
+        foreach ($res_arr as $row) {
+            $resualt[] = intval($row["artist_id"]);
         }
     }
 
     return $resualt;
 
-    // code here 18:25 -> 374
+}
+
+function get_music_category_ids($id)
+{
+
+    $sql = "SELECT category_id FROM music_category WHERE music_id = $id";
+    $res = db_query($sql);
+    $resualt = [];
+    if ($res && $res->num_rows) {
+        $res_arr = mysqli_fetch_all($res, MYSQLI_ASSOC);
+
+        foreach ($res_arr as $row) {
+            $resualt[] = intval($row["category_id"]);
+        }
+    }
+
+    return $resualt;
+
+}
+
+function get_filename_from_url($url)
+{
+    if (empty($url)) {
+        return '';
+    }
+
+    $info = pathinfo($url);
+
+    if (isset($info['extension']) && $info['extension'] == "mp3") {
+        return $info['basename'];
+    }
+
+    return '';
+
+}
+
+function get_size_from_url($url)
+{
+    if (!$url) {
+        return 0;
+    }
+
+    $ch = curl_init($url);
+    curl_setopt_array(
+        $ch,
+        [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_NOBODY => true,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false
+        ]
+
+    );
+
+    $res = curl_exec($ch);
+
+    $file_size = curl_getinfo($ch,CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+
+    curl_close($ch);
+
+    return  $file_size;
+
+
+}
+
+
+function byte_to_megabyte($size){
+    return round($size /1024 /1024 ,1);
 }

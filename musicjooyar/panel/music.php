@@ -10,9 +10,12 @@
         $music_content = "";
         $music_q320 = "";
         $music_q128 = "";
+        $music_q320_size = 0;
+        $music_q128_size = 0;
         $music_cover = "";
         $music_status = "draft";
-
+        $selected_artists = [];
+        $selected_cats = [];
 
         $music_id = 0;
 
@@ -32,12 +35,26 @@
                 $music_cover = $music["cover"];
                 $music_status = $music["status"];
 
+                $selected_artists = get_music_artist_ids($music_id);
+                $selected_cats = get_music_category_ids($music_id);
+
             } else {
                 $music_id = 0;
             }
 
+            if($music_q128){
+                $size = get_size_from_url($music_q128);
+                $music_q128_size = byte_to_megabyte($size );
+            }
+            if($music_q320){
+                $size = get_size_from_url($music_q320);
+                $music_q320_size = byte_to_megabyte($size );
+            }
 
-
+            echo $size = get_size_from_url($music_q128) ; 
+            echo $music_q128_size ;
+            exit; 
+           
         }
 
         ?>
@@ -76,31 +93,13 @@
                             <textarea name="content" id="content" rows="10" class="form-control"
                                 placeholder="عنوان موزیک را وارد کنید" required><?php echo $music_content; ?></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="q320">
-                                آدرس فایل صوتی با کیفیت 320
-                                <span class="btn-upload">آپلود</a>
-                            </label>
-                            <input type="url" name="q320" value="<?php echo $music_q320; ?>" class="form-control ltr"
-                                placeholder="" readonly required>
-                            <input type="file" id="q320" accept="audio/mpeg" name="q320" style="display: none">
-                        </div>
-                        <div class="form-group">
-                            <label for="q128">
-                                آدرس فایل صوتی با کیفیت 128
-                                <span class="btn-upload">آپلود</span>
-                            </label>
-                            <input type="url" name="q128" value="<?php echo $music_q128; ?>" class="form-control ltr"
-                                placeholder="" readonly>
-                            <input type="file" id="q128" accept="audio/mpeg" name="q128" style="display: none">
-                        </div>
                         <div class="music-metas">
                             <div class="form-group">
                                 <label for="artist">خواننده</label>
                                 <select name="artists[]" id="artist" required multiple class="form-control select2"
                                     style="width: 100%">
                                     <?php foreach (get_artists() as $artist): ?>
-                                        <option value="<?php echo $artist["ID"] ?>">
+                                        <option value="<?php echo $artist["ID"] ?> " <?php selected(in_array($artist["ID"], $selected_artists)) ?>>
                                             <?php echo $artist["first_name"] . " " . $artist["last_name"]; ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -111,7 +110,7 @@
                                 <select name="categoryies[]" id="category" multiple required
                                     class="form-control select2" style="width: 100%">
                                     <?php foreach (get_cats() as $cats): ?>
-                                        <option value="<?php echo $cats["ID"] ?>">
+                                        <option value="<?php echo $cats["ID"] ?> " <?php selected(in_array($cats["ID"], $selected_cats)) ?>>
                                             <?php echo $cats["title"]; ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -167,12 +166,12 @@
                                     </div>
                                 </div>
                             </label>
-                            <div class="uploaded-image" style="background-image: url('../images/music-cover.jpg')">
+                            <div class="uploaded-image" style="background-image: url('<?php echo $music_cover; ?>')">
                                 <i class="mj mj-trash delete-cover"></i>
                             </div>
                         </div><!--.cover-container-->
 
-                        <div class="music-uploader"><!-- .selected, .uploading, .uploaded, .error -->
+                        <div class="music-uploader <?php echo $music_q128 ? "selected uploaded" : $music_q128 ?></div>"  ><!-- .selected, .uploading, .uploaded, .error -->
                             <label for="music128">
                                 <img src="../images/icon-mp3.png" alt="Mp3" width="92" height="92" loading="lazy">
                                 <div class="upload-music-text">
@@ -180,7 +179,11 @@
                                     <strong>یا کلیک کنید</strong>
                                 </div>
                                 <input type="file" name="music128" accept="audio/mpeg" id="music128">
+                                <input type="hidden" name="q128" value="<?php echo $music_q128; ?>">
+
                             </label>
+                            <input type="hidden" name="cover" class="music_cover_url"
+                                value="<?php echo $music_cover; ?>">
                             <span class="music-quality quality-128">128kbps</span>
                             <div class="music-item">
                                 <i class="mj mj-close music-cancel-upload"></i>
@@ -214,16 +217,17 @@
                                         <rect class="spinner_d9Sa spinner_pote" x="11" y="11" rx="1" width="2"
                                             height="9" />
                                     </svg>
-                                    <span class="uploader-music-title">Jazzab - Mostafa Ragheb & Hamid Hiraad -
-                                        320.mp3</span>
-                                    <span class="music-size">11.MB</span>
+                                    <span class="uploader-music-title">J
+                                        <?php echo get_filename_from_url($music_q128); ?>
+                                    </span>
+                                    <span class="music-size"><?php echo $music_q128_size ?></span>
                                 </p>
                                 <div class="upload-progress-bar">
                                     <div class="upload-progress">
                                         <span>95%</span>
                                     </div>
                                 </div>
-                                <audio src="" controls></audio>
+                                <audio src="<?php echo $music_q128 ?>" controls></audio>
                             </div><!--.music-item-->
                             <p class="error-text">
                                 <i class="mj mj-close-circle"></i>
@@ -231,7 +235,7 @@
                             </p>
                         </div><!--.music-container-->
 
-                        <div class="music-uploader"><!-- .selected, .uploading, .uploaded, .error -->
+                        <div class="music-uploader <?php echo $music_q320 ? "selected uploaded" : "" ?> </div>"  ><!-- .selected, .uploading, .uploaded, .error -->
                             <label for="music320">
                                 <img src="../images/icon-mp3.png" alt="Mp3" width="92" height="92" loading="lazy">
                                 <div class="upload-music-text">
@@ -239,6 +243,8 @@
                                     <strong>یا کلیک کنید</strong>
                                 </div>
                                 <input type="file" name="music320" accept="audio/mpeg" id="music320">
+                                <input type="hidden" name="q320" value="<?php echo $music_q320; ?>">
+
                             </label>
                             <span class="music-quality">320kbps</span>
                             <div class="music-item">
@@ -273,16 +279,17 @@
                                         <rect class="spinner_d9Sa spinner_pote" x="11" y="11" rx="1" width="2"
                                             height="9" />
                                     </svg>
-                                    <span class="uploader-music-title">Jazzab - Mostafa Ragheb & Hamid Hiraad -
-                                        320.mp3</span>
-                                    <span class="music-size">11.MB</span>
+                                    <span class="uploader-music-title">
+                                        <?php echo get_filename_from_url($music_q320); ?>
+                                    </span>
+                                    <span class="music-size"><?php echo $music_q320_size ?></span>
                                 </p>
                                 <div class="upload-progress-bar">
                                     <div class="upload-progress">
                                         <span>95%</span>
                                     </div>
                                 </div>
-                                <audio src="" controls></audio>
+                                <audio src="<?php echo $music_q320 ?>" controls></audio>
                             </div><!--.music-item-->
                             <p class="error-text">
                                 <i class="mj mj-close-circle"></i>

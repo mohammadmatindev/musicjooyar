@@ -117,6 +117,20 @@ jQuery(document).ready(function ($) {
 
     }
 
+    // Source - https://stackoverflow.com/q/15900485
+    // Posted by l2aelba, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-06-29, License - CC BY-SA 4.0
+
+    function formatSizeUnits(bytes) {
+        if (bytes >= 1073741824) { bytes = (bytes / 1073741824).toFixed(2) + " GB"; }
+        else if (bytes >= 1048576) { bytes = (bytes / 1048576).toFixed(2) + " MB"; }
+        else if (bytes >= 1024) { bytes = (bytes / 1024).toFixed(2) + " KB"; }
+        else if (bytes > 1) { bytes = bytes + " bytes"; }
+        else if (bytes == 1) { bytes = bytes + " byte"; }
+        else { bytes = "0 bytes"; }
+        return bytes;
+    }
+
 
     $('.close-croppie-modal').click(function () {
         $('#cropper-wrapper').removeClass('show');
@@ -191,7 +205,16 @@ jQuery(document).ready(function ($) {
 
 
                 },
-                error: function (jqXHR) { console.log("Error") },
+                error: function (response) {
+
+                    Swal.fire({
+                        title: "ERROR",
+                        text: response.responseJSON.message,
+                        icon: "error"
+                    });
+
+
+                },
                 complete: function () {
                     $(".profile-upload-progress").css('height', `0%`)
                 }
@@ -698,7 +721,16 @@ jQuery(document).ready(function ($) {
 
 
                 },
-                error: function (jqXHR) { console.log("Error") },
+                error: function (response) {
+
+                    Swal.fire({
+                        title: "ERROR",
+                        text: response.responseJSON.message,
+                        icon: "error"
+                    });
+
+
+                },
                 complete: function () {
                     $(".artist-col-avatar").addClass("uploaded")
                     $(".artist-col-avatar").removeClass("error")
@@ -776,6 +808,204 @@ jQuery(document).ready(function ($) {
 
     })
 
+    $("#artist_avatar").change(function (e) {
+        e.preventDefault()
+        let file = e.target.files[0]
+        $("#cropper-wrapper").addClass("show")
 
+
+        // $(".croppie").croppie({
+        //     url: URL.createObjectURL(file)
+        // })
+
+        let croppie_el = document.querySelector(".croppie");
+        console.log(croppie_el)
+        croppie = new Croppie(croppie_el, {
+            viewport: { width: 200, height: 200 },
+            url: URL.createObjectURL(file)
+        })
+
+    })
+
+    $("#cover").change(function (e) {
+        e.preventDefault();
+
+
+        let file = e.target.files[0]
+
+        let form_data = new FormData;
+        form_data.append("music_cover", file)
+
+        $.ajax({
+            type: "POST",
+            url: "../ajax/music/ajax-upload-cover.php",
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        let total = e.total;
+                        let uploaded = e.loaded;
+                        let percent = uploaded / total * 100;
+
+
+                        $(".uploading-percent").text(`${Math.round(percent)}%`)
+                    }
+
+                })
+                return xhr
+            },
+            beforeSend: function () {
+
+                let preview_url = URL.createObjectURL(file);
+                $(".uploading-status").css("background-image", `url('${preview_url}')`);
+
+                $(".cover-container").removeClass("uploaded")
+                $(".cover-container").addClass("uploading")
+                $(".cover-container").removeClass("error")
+
+
+            },
+            success: function (response) {
+
+
+
+                $(".music_cover_url").val(response.cover)
+
+                $(".cover-container").addClass("uploaded")
+
+                $(".uploaded-image").css("background-image", `url('${response.cover}')`);
+
+            },
+            error: function (response) {
+
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.responseJSON.message,
+                    icon: "error"
+                });
+
+
+            },
+            complete: function () {
+                $(".cover-container").addClass("uploaded")
+                $(".cover-container").removeClass("error")
+                $(".cover-container").removeClass("uploading")
+                $(".cover-upload .uploading-percent").text(`0%`)
+            }
+
+        });
+
+    });
+
+    $(".delete-cover").click(function (e) {
+        e.preventDefault();
+
+        $(".cover-container").removeClass("uploaded");
+
+        $(".music_cover_url").val("");
+
+
+    })
+
+
+    $(".music-uploader input[type='file']").change(function (e) {
+
+        e.preventDefault();
+
+        let uploader_box = $(this).closest(".music-uploader")
+
+        let files = e.target.files;
+
+        if (!files.length) {
+            return;
+        }
+
+        let quality = e.target.id
+
+        let file = files[0];
+
+
+        let form_data = new FormData;
+        form_data.append("music_audio", file)
+        form_data.append("music_quality", quality)
+
+        $.ajax({
+            type: "POST",
+            url: "../ajax/music/ajax-upload-music.php",
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        let total = e.total;
+                        let uploaded = e.loaded;
+                        let percent = uploaded / total * 100;
+
+                        $(uploader_box).find(".upload-progress span").text(`${Math.round(percent)}%`)
+                        $(uploader_box).find(".upload-progress ").css("width", `0%`)
+
+                        $(uploader_box).find(".upload-progress ").css("width", `${Math.round(percent)}%`)
+
+                    }
+
+                })
+                return xhr
+            },
+            beforeSend: function () {
+
+                let preview_url = URL.createObjectURL(file);
+                $(uploader_box).addClass("selected uploading");
+                $(uploader_box).find(".uploader-music-title").text(file.name)
+                $(uploader_box).find(".music-size").text(formatSizeUnits(file.size))
+                $(uploader_box).find("audio").attr("src", preview_url)
+
+
+                // let preview_url = URL.createObjectURL(file);
+                // $(".uploading-status").css("background-image", `url('${preview_url}')`);
+
+                // $(".cover-container").removeClass("uploaded")
+                // $(".cover-container").addClass("uploading")
+                // $(".cover-container").removeClass("error")
+
+
+            },
+            success: function (response) {
+
+                $(uploader_box).addClass("uploaded");
+
+                $(uploader_box).find("input[type='hidden']").val(response.music);
+
+            },
+            error: function (response) {
+
+                Swal.fire({
+                    title: "ERROR",
+                    text: response.responseJSON.message,
+                    icon: "error"
+                });
+
+
+            },
+            complete: function () {
+                $(uploader_box).removeClass("uploading");
+
+            }
+
+        });
+
+
+
+
+
+    })
 })
+
+
 jQuery('.select2').select2();

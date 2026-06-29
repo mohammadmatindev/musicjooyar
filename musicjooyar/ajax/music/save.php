@@ -15,6 +15,7 @@ if (!is_current_user_admin()) {
 
 if (isset($_POST['save_music']) && $_POST['save_music'] == "reved") {
 
+    
 
     $music_id = isset($_POST["id"]) ? db_escape($_POST["id"]) : 0;
 
@@ -28,7 +29,7 @@ if (isset($_POST['save_music']) && $_POST['save_music'] == "reved") {
     $music_q128 = isset($_POST["q128"]) ? db_escape($_POST["q128"]) : NULL;
     $music_cover = isset($_POST["cover"]) ? db_escape($_POST["cover"]) : NULL;
     $music_status = isset($_POST["status"]) ? db_escape($_POST["status"]) : NULL;
-   
+
 
 
 
@@ -64,24 +65,50 @@ if (isset($_POST['save_music']) && $_POST['save_music'] == "reved") {
 
     }
 
+    db_delete("music_artist", [
+        "music_id" => $music_id
+    ]);
 
     if (isset($_POST["artists"]) && is_array($_POST["artists"])) {
 
-        db_delete("music_artist",[
-             "music_id" => $music_id
-        ]);
+
         $artist_ids = array_map("intval", $_POST["artists"]);
         foreach ($artist_ids as $artist_id) {
             db_insert("music_artist", [
                 "music_id" => $music_id,
                 "artist_id" => $artist_id
             ]);
+
         }
         ;
 
+    }
 
+
+
+    db_delete("music_category", [
+        "music_id" => $music_id
+    ]);
+
+    if (isset($_POST["categoryies"]) && is_array($_POST["categoryies"])) {
+
+
+        $cat_ids = array_map("intval", $_POST["categoryies"]);
+        foreach ($cat_ids as $cat_id) {
+            db_insert("music_category", [
+                "music_id" => $music_id,
+                "category_id" => $cat_id
+            ]);
+
+        }
+        ;
 
     }
+
+
+
+
+
     ;
     $redirect_path = SITE_URL . "panel/music.php";
     $action_lable = $is_updated ? "ویرایش" : "اضافه";
