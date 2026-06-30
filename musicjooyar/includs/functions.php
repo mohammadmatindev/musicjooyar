@@ -392,7 +392,12 @@ function get_size_from_url($url)
         return 0;
     }
 
+    $url = str_replace(' ','%20',$url);
     $ch = curl_init($url);
+
+    
+
+  
     curl_setopt_array(
         $ch,
         [
@@ -409,9 +414,8 @@ function get_size_from_url($url)
 
     $file_size = curl_getinfo($ch,CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 
-    curl_close($ch);
-
-    return  $file_size;
+    return $file_size;
+  
 
 
 }

@@ -1005,6 +1005,8 @@ jQuery(document).ready(function ($) {
 
 
     })
+
+    // $(".music-cancel-upload"). remove upload music 
 })
 
 

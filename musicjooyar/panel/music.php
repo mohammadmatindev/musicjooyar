@@ -51,9 +51,7 @@
                 $music_q320_size = byte_to_megabyte($size );
             }
 
-            echo $size = get_size_from_url($music_q128) ; 
-            echo $music_q128_size ;
-            exit; 
+       
            
         }
 
@@ -162,7 +160,7 @@
                                     style="background-image: url('../images/music-cover.jpg')">
                                     <div class="uploading-text">
                                         در حال بارگذاری فایل:
-                                        <strong class="uploading-percent">2%</strong>
+                                        <strong class="uploading-percent">0%</strong>
                                     </div>
                                 </div>
                             </label>
@@ -220,7 +218,7 @@
                                     <span class="uploader-music-title">J
                                         <?php echo get_filename_from_url($music_q128); ?>
                                     </span>
-                                    <span class="music-size"><?php echo $music_q128_size ?></span>
+                                    <span class="music-size"><?php echo $music_q128_size . "MB" ?></span>
                                 </p>
                                 <div class="upload-progress-bar">
                                     <div class="upload-progress">
@@ -282,7 +280,7 @@
                                     <span class="uploader-music-title">
                                         <?php echo get_filename_from_url($music_q320); ?>
                                     </span>
-                                    <span class="music-size"><?php echo $music_q320_size ?></span>
+                                    <span class="music-size"><?php echo $music_q320_size . "MB" ?></span>
                                 </p>
                                 <div class="upload-progress-bar">
                                     <div class="upload-progress">
